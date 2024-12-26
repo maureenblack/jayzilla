@@ -372,21 +372,26 @@ body {
 }
 
 .pricing-btn {
-    background: #FFA07A;
+    background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
     color: white;
-    border: none;
-    padding: 0.75rem 2rem;
+    padding: 0.8rem 2rem;
     border-radius: 50px;
-    font-weight: 500;
-    transition: all 0.3s ease;
     text-decoration: none;
+    transition: all 0.3s ease;
     display: inline-block;
+    border: 2px solid transparent;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 .pricing-btn:hover {
-    background: #FF8C69;
-    color: white;
+    background: transparent;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
     transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 }
 
 .pricing-note {
