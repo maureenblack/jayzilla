@@ -126,7 +126,7 @@ The application is fully responsive and optimized for:
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is the property of Giiyo Tech and is not open source.
 
 ## 👥 Authors
 

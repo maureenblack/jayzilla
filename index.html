@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jayzilla Services - Landscaping & Transportation</title>
-    <link rel="icon" type="image/png" href="./images/icon.png">
+    <title>Jayzilla Services</title>
+    <link rel="icon" type="image/png" href="images/icon.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -34,7 +34,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
                     <li class="nav-item"><a class="nav-link" href="#pricing">Pricing</a></li>
                     <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
@@ -48,54 +48,52 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="hero">
+    <section class="hero-section">
         <div class="container">
             <div class="hero-content">
-                <h1>Welcome to Jayzilla Services</h1>
-                <p class="lead">Reliable Solutions for Landscaping and Transportation Needs</p>
-                <a href="#services" class="btn btn-primary btn-lg">Get Started</a>
+                <h1>Professional Lawn Mowing & Transportation</h1>
+                <p>Your trusted partner for quality lawn care and reliable transportation services. Fast, efficient, and affordable solutions for your needs.</p>
+                <a href="service-request.html" class="btn btn-primary btn-lg">Request Service</a>
             </div>
         </div>
     </section>
 
     <!-- Services Section -->
-    <section class="services" id="services">
-        <div class="animated-bg">
-            <div class="particle"></div>
-            <div class="particle"></div>
-            <div class="particle"></div>
-        </div>
+    <section class="services-section" id="services">
         <div class="container">
-            <div class="section-header">
-                <h2 class="text-center mb-5">Our Services</h2>
-                <div class="section-line"></div>
+            <h2 class="section-title text-center mb-5">Our Services</h2>
+            
+            <!-- Featured Image -->
+            <div class="service-image-feature">
+                <img src="images/jayzilla-truck.png" alt="Jayzilla Transportation Services" class="img-fluid">
             </div>
-            <div class="row">
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row g-4">
+                <!-- Service Cards -->
+                <div class="col-md-6">
                     <div class="service-card">
-                        <div class="service-icon">
-                            <i class="fas fa-truck"></i>
-                        </div>
-                        <h3>Transportation</h3>
-                        <p>Reliable and efficient transportation services for all your needs.</p>
+                        <i class="fas fa-truck"></i>
+                        <h3>Transportation Services</h3>
+                        <p>Reliable and efficient transportation solutions for all your moving needs. Whether it's local moving or delivery, we've got you covered.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> Local Moving</li>
+                            <li><i class="fas fa-check"></i> Delivery Services</li>
+                            <li><i class="fas fa-check"></i> Professional Drivers</li>
+                            <li><i class="fas fa-check"></i> Competitive Rates</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="col-md-6">
                     <div class="service-card">
-                        <div class="service-icon">
-                            <i class="fas fa-leaf"></i>
-                        </div>
-                        <h3>Landscaping</h3>
-                        <p>Professional landscaping to transform your outdoor spaces.</p>
-                    </div>
-                </div>
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="service-card">
-                        <div class="service-icon">
-                            <i class="fas fa-home"></i>
-                        </div>
-                        <h3>Property Maintenance</h3>
-                        <p>Comprehensive property maintenance services.</p>
+                        <i class="fas fa-cut"></i>
+                        <h3>Lawn Mowing</h3>
+                        <p>Professional lawn mowing services to keep your yard looking pristine. Regular maintenance for residential and commercial properties.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> Regular Mowing</li>
+                            <li><i class="fas fa-check"></i> Edge Trimming</li>
+                            <li><i class="fas fa-check"></i> Yard Cleanup</li>
+                            <li><i class="fas fa-check"></i> Flexible Scheduling</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -176,31 +174,51 @@
     </section>
 
     <!-- Testimonials Section -->
-    <section class="testimonials" id="testimonials">
+    <section class="testimonials-section" id="testimonials">
         <div class="container">
-            <h2 class="text-center">Testimonials</h2>
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <p>"Exceptional landscaping service! The team's attention to detail is remarkable."</p>
-                    <div class="client-info">
-                        <strong>Sarah T.</strong>
-                        <span>★★★★★</span>
+            <h2 class="section-title text-center">What Our Clients Say</h2>
+            
+            <div id="testimonialCarousel" class="carousel slide testimonial-carousel" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="2"></button>
+                </div>
+                
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="testimonial-item">
+                            <p class="testimonial-text">"Jayzilla Services has been maintaining our lawn for over a year now. Their work is consistently excellent, and they're always reliable!"</p>
+                            <h4 class="testimonial-author">John Smith</h4>
+                            <p class="testimonial-role">Homeowner</p>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <div class="testimonial-item">
+                            <p class="testimonial-text">"I've used their transportation services multiple times for moving. They're professional, careful with belongings, and always on time."</p>
+                            <h4 class="testimonial-author">Sarah Johnson</h4>
+                            <p class="testimonial-role">Business Owner</p>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <div class="testimonial-item">
+                            <p class="testimonial-text">"The best lawn service in town! They're thorough, professional, and their prices are very reasonable."</p>
+                            <h4 class="testimonial-author">Michael Brown</h4>
+                            <p class="testimonial-role">Property Manager</p>
+                        </div>
                     </div>
                 </div>
-                <div class="testimonial-card">
-                    <p>"Most reliable transportation service. Always on time, always professional."</p>
-                    <div class="client-info">
-                        <strong>Michael R.</strong>
-                        <span>★★★★★</span>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <p>"Made my long-distance move completely stress-free. Highly recommended!"</p>
-                    <div class="client-info">
-                        <strong>Emily C.</strong>
-                        <span>★★★★★</span>
-                    </div>
-                </div>
+                
+                <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
         </div>
     </section>
@@ -230,32 +248,32 @@
         </div>
     </section>
 
-    <!-- Contact Form -->
-    <section id="contact" class="py-5">
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
         <div class="container">
-            <h2 class="text-center">Contact Us</h2>
-            <p class="text-center contact-subtitle">Get in touch with us today</p>
-            <div class="row justify-content-center">
-                <div class="col-md-8 col-lg-6">
-                    <div class="contact-form-wrapper">
-                        <form id="contactForm" class="contact-form">
-                            <div class="form-group mb-4">
-                                <label for="name">Full Name</label>
-                                <input type="text" class="form-control" id="name" name="name" required>
-                            </div>
-                            <div class="form-group mb-4">
-                                <label for="email">Email Address</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
-                            </div>
-                            <div class="form-group mb-4">
-                                <label for="message">Your Message</label>
-                                <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
-                            </div>
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
-                            </div>
-                        </form>
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h2 class="section-title">Contact Us</h2>
+                    <p class="mb-4">Ready to transform your property? Get in touch with us today!</p>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone me-2"></i> (123) 456-7890</p>
+                        <p><i class="fas fa-envelope me-2"></i> info@jayzilla.com</p>
+                        <p><i class="fas fa-map-marker-alt me-2"></i> 123 Main St, City, State 12345</p>
                     </div>
+                </div>
+                <div class="col-lg-6">
+                    <form class="contact-form">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="Your Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" class="form-control" placeholder="Your Email" required>
+                        </div>
+                        <div class="mb-3">
+                            <textarea class="form-control" rows="4" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -306,9 +324,29 @@
     </footer>
 
     <!-- Back to Top Button -->
-    <div class="back-to-top">
+    <button class="back-to-top">
         <i class="fas fa-arrow-up"></i>
-    </div>
+    </button>
+
+    <!-- Scripts -->
+    <script>
+        // Back to top button
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 100) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+        
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
