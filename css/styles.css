@@ -1315,3 +1315,247 @@ footer {
         padding: 60px 0;
     }
 }
+
+/* About Page Styles */
+.about-hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../images/beautifulland.png');
+    background-size: cover;
+    background-position: center;
+    padding: 150px 0;
+    color: white;
+    margin-bottom: 80px;
+}
+
+.about-hero-section h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.about-hero-section .lead {
+    font-size: 1.5rem;
+    opacity: 0.9;
+}
+
+.our-story-section {
+    padding: 80px 0;
+}
+
+.our-story-section h2 {
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-weight: 600;
+}
+
+.our-story-section p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+.our-values-section {
+    padding: 80px 0;
+    background-color: var(--dark-surface);
+}
+
+.value-card {
+    padding: 2rem;
+    background: var(--dark-elevated);
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+    height: 100%;
+}
+
+.value-card:hover {
+    transform: translateY(-10px);
+}
+
+.value-card i {
+    font-size: 2.5rem;
+    color: var(--accent-color);
+}
+
+.value-card h3 {
+    color: var(--primary-color);
+    margin: 1rem 0;
+    font-size: 1.5rem;
+}
+
+.team-section {
+    padding: 80px 0;
+}
+
+.team-member img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border: 5px solid var(--primary-color);
+    transition: transform 0.3s ease;
+}
+
+.team-member:hover img {
+    transform: scale(1.05);
+}
+
+.team-member h3 {
+    color: var(--primary-color);
+    margin: 1rem 0 0.5rem;
+    font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .about-hero-section {
+        padding: 100px 0;
+    }
+
+    .about-hero-section h1 {
+        font-size: 2.5rem;
+    }
+
+    .our-story-section {
+        text-align: center;
+    }
+
+    .our-story-section img {
+        margin-top: 2rem;
+    }
+
+    .team-member {
+        margin-bottom: 2rem;
+    }
+}
+
+/* Services Page Styles */
+.services-hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../images/beautifulland.png');
+    background-size: cover;
+    background-position: center;
+    padding: 150px 0;
+    color: white;
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.services-hero-section h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.services-hero-section .lead {
+    font-size: 1.5rem;
+    opacity: 0.9;
+}
+
+.main-services-section {
+    padding: 40px 0;
+}
+
+.service-block {
+    padding: 60px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.service-block:last-child {
+    border-bottom: none;
+}
+
+.service-content {
+    padding: 20px;
+}
+
+.service-content h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.service-content p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+.service-features {
+    margin: 2rem 0;
+}
+
+.service-features h3 {
+    color: var(--accent-color);
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.service-features ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.service-features li {
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+}
+
+.service-features li i {
+    color: var(--primary-color);
+    margin-right: 10px;
+}
+
+.why-choose-section {
+    background-color: var(--dark-surface);
+    padding: 80px 0;
+}
+
+.feature-card {
+    text-align: center;
+    padding: 2rem;
+    background: var(--dark-elevated);
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+    height: 100%;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+}
+
+.feature-card i {
+    font-size: 2.5rem;
+    color: var(--accent-color);
+    margin-bottom: 1.5rem;
+}
+
+.feature-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.feature-card p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .services-hero-section {
+        padding: 100px 0;
+    }
+
+    .services-hero-section h1 {
+        font-size: 2.5rem;
+    }
+
+    .service-block {
+        padding: 40px 0;
+    }
+
+    .service-content {
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    .service-features {
+        text-align: left;
+    }
+}
