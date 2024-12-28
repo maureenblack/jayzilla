@@ -4,6 +4,44 @@ let elements;
 let paypal;
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize form elements
+    const form = document.getElementById('serviceRequestForm');
+    const steps = document.querySelectorAll('.form-step');
+    const progressBar = document.querySelector('.progress-bar');
+    const serviceType = document.getElementById('serviceType');
+    const phoneInput = document.getElementById('phone');
+    
+    // Base prices for services
+    const prices = {
+        transportation: {
+            'local-moving': { base: 100, perMile: 2 },
+            'furniture': { base: 80, perMile: 1.5 },
+            'delivery': { base: 60, perMile: 1 }
+        },
+        lawncare: {
+            'mowing': { base: 50, perSqFt: 0.02 },
+            'trimming': { base: 40, perSqFt: 0.015 },
+            'cleanup': { base: 60, perSqFt: 0.025 },
+            'treatment': { base: 70, perSqFt: 0.03 }
+        }
+    };
+
+    // Phone number validation
+    phoneInput.addEventListener('input', function(e) {
+        let x = e.target.value.replace(/\\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+        e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+    });
+
+    phoneInput.addEventListener('blur', function() {
+        const phoneNumber = this.value.replace(/\\D/g, '');
+        if (phoneNumber.length !== 10) {
+            this.classList.add('is-invalid');
+            this.nextElementSibling.textContent = 'Please enter a valid 10-digit US phone number';
+        } else {
+            this.classList.remove('is-invalid');
+        }
+    });
+    
     // Initialize date picker
     flatpickr("#serviceDate", {
         minDate: "today",
@@ -45,25 +83,57 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Form steps navigation
-    const steps = Array.from(document.querySelectorAll('.form-step'));
-    const progressBar = document.querySelector('.progress-bar');
+    function calculateEstimatedPrice() {
+        const estimatedPriceSection = document.querySelector('.estimated-price-section');
+        const estimatedPriceSpan = document.getElementById('estimatedPrice');
+        
+        if (!serviceType.value) {
+            estimatedPriceSection.classList.add('d-none');
+            return;
+        }
+
+        let basePrice = 0;
+        let finalPrice = 0;
+
+        if (serviceType.value === 'transportation') {
+            const type = document.getElementById('transportationType').value;
+            const distance = parseFloat(document.getElementById('distance').value) || 0;
+            const size = document.getElementById('itemSize').value;
+
+            if (type && distance && size) {
+                basePrice = prices.transportation[type].base;
+                finalPrice = basePrice + (distance * prices.transportation[type].perMile);
+                
+                // Adjust for load size
+                if (size === 'medium') finalPrice *= 1.5;
+                if (size === 'large') finalPrice *= 2;
+
+                estimatedPriceSection.classList.remove('d-none');
+                estimatedPriceSpan.textContent = `$${Math.round(finalPrice * 0.8)} - $${Math.round(finalPrice * 1.2)}`;
+            }
+        } else if (serviceType.value === 'lawncare') {
+            const type = document.getElementById('lawncareType').value;
+            const size = parseFloat(document.getElementById('lawnSize').value) || 0;
+            const condition = document.getElementById('lawnCondition').value;
+
+            if (type && size) {
+                basePrice = prices.lawncare[type].base;
+                finalPrice = basePrice + (size * prices.lawncare[type].perSqFt);
+                
+                // Adjust for lawn condition
+                if (condition === 'fair') finalPrice *= 1.2;
+                if (condition === 'poor') finalPrice *= 1.4;
+
+                estimatedPriceSection.classList.remove('d-none');
+                estimatedPriceSpan.textContent = `$${Math.round(finalPrice * 0.8)} - $${Math.round(finalPrice * 1.2)}`;
+            }
+        }
+    }
+
+    // Navigation between steps
     let currentStep = 0;
+    updateProgress();
 
-    function showStep(stepIndex) {
-        steps.forEach((step, index) => {
-            step.classList.toggle('d-none', index !== stepIndex);
-        });
-        updateProgress();
-    }
-
-    function updateProgress() {
-        const progress = ((currentStep + 1) / steps.length) * 100;
-        progressBar.style.width = `${progress}%`;
-        progressBar.setAttribute('aria-valuenow', progress);
-    }
-
-    // Next step buttons
     document.querySelectorAll('.next-step').forEach(button => {
         button.addEventListener('click', () => {
             console.log('Next button clicked'); // Debug log
@@ -72,17 +142,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 showStep(currentStep);
                 console.log('Current step:', currentStep); // Debug log
                 if (currentStep === steps.length - 1) {
-                    updateSummary();
+                    updateRequestSummary();
                 }
             }
         });
     });
 
-    // Previous step buttons
     document.querySelectorAll('.prev-step').forEach(button => {
         button.addEventListener('click', () => {
             currentStep--;
-            showStep(currentStep);
+            updateSteps();
+            updateProgress();
         });
     });
 
