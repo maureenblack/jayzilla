@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
     <style>
-        /* Previous styles remain the same */
+        /* Enhanced Form Styles */
         .form-control {
             padding: 0.75rem 1rem;
             font-size: 1rem;
@@ -21,8 +21,8 @@
         }
 
         .form-control:focus {
-            border-color: #0d6efd;
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+            border-color: #ffc107;
+            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
         }
 
         .form-label {
@@ -32,24 +32,32 @@
         }
 
         .price-summary {
-            background-color: #f8f9fa;
+            background-color: #fff;
             border: 2px solid #e9ecef;
             border-radius: 1rem;
             padding: 1.5rem !important;
         }
 
+        .price-summary h5 {
+            color: #344767;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
         .price-item {
             display: flex;
             justify-content: space-between;
-            padding: 0.5rem 0;
-            color: #495057;
+            padding: 0.75rem 0;
+            color: #344767;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #e9ecef;
         }
 
         .total-price {
             font-size: 1.25rem;
             color: #000;
             font-weight: 700;
-            background-color: #e9ecef;
+            background-color: #ffc107;
             padding: 1rem;
             border-radius: 0.5rem;
             margin-top: 1rem;
@@ -76,14 +84,87 @@
 
         .review-label {
             font-weight: 600;
-            color: #495057;
+            color: #344767;
         }
 
         .review-value {
             color: #344767;
         }
 
-        /* New styles for image upload */
+        .progress {
+            height: 0.75rem;
+            border-radius: 1rem;
+            background-color: #e9ecef;
+        }
+
+        .progress-bar {
+            background-color: #ffc107;
+            border-radius: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #198754;
+            border-color: #198754;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: #198754;
+            border-color: #198754;
+            color: #fff;
+        }
+
+        .btn-success {
+            background-color: #198754;
+            border-color: #198754;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success:hover {
+            background-color: #146c43;
+            border-color: #146c43;
+            color: #fff;
+        }
+
+        .section-header h1 {
+            color:  #198754;
+            font-weight: 700;
+        }
+
+        .section-header p {
+            color:  #ffc107;
+            font-size: 1.1rem;
+        }
+
+        .form-step {
+            background-color: #fff;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        /* Image upload styles remain the same */
         .image-upload-container {
             border: 2px dashed #dee2e6;
             border-radius: 0.5rem;
@@ -94,7 +175,7 @@
         }
 
         .image-upload-container:hover {
-            border-color: #0d6efd;
+            border-color: #ffc107;
         }
 
         .custom-file-upload {
@@ -147,40 +228,6 @@
             color: #dc3545;
             font-size: 0.875rem;
             margin-top: 0.5rem;
-        }
-
-        .progress {
-            height: 0.75rem;
-            border-radius: 1rem;
-            background-color: #e9ecef;
-        }
-
-        .progress-bar {
-            background-color: #0d6efd;
-            border-radius: 1rem;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
-            border-radius: 0.5rem;
-        }
-
-        .section-header h1 {
-            color: #344767;
-            font-weight: 700;
-        }
-
-        .section-header p {
-            color: #6c757d;
-            font-size: 1.1rem;
-        }
-
-        .form-step {
-            background-color: #fff;
-            border-radius: 1rem;
-            padding: 2rem;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
         }
     </style>
 </head>
