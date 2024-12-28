@@ -1,45 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<!-- Previous head content remains the same -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Service Request - Jayzilla Services</title>
     <link rel="icon" type="image/png" href="images/icon.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css">
     <style>
-        .back-to-top {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: var(--accent-color);
-            color: #fff;
+        /* Previous styles remain the same */
+        .form-control {
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            border: 2px solid #dee2e6;
+            border-radius: 0.5rem;
+            background-color: #fff;
+            transition: border-color 0.2s ease-in-out;
+        }
+
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #344767;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-summary {
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 1rem;
+            padding: 1.5rem !important;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            color: #495057;
+        }
+
+        .total-price {
+            font-size: 1.25rem;
+            color: #000;
+            font-weight: 700;
+            background-color: #e9ecef;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .review-section {
+            background-color: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .review-section h5 {
+            color: #344767;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .review-item {
+            margin-bottom: 0.75rem;
+        }
+
+        .review-label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .review-value {
+            color: #344767;
+        }
+
+        /* New styles for image upload */
+        .image-upload-container {
+            border: 2px dashed #dee2e6;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            text-align: center;
+            background-color: #f8f9fa;
+            transition: border-color 0.2s ease-in-out;
+        }
+
+        .image-upload-container:hover {
+            border-color: #0d6efd;
+        }
+
+        .custom-file-upload {
+            margin-bottom: 1rem;
+        }
+
+        #imagePreviewContainer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .image-preview {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .delete-image {
+            position: absolute;
+            top: 0.25rem;
+            right: 0.25rem;
+            background-color: rgba(255, 255, 255, 0.9);
             border: none;
-            padding: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            display: none;
             border-radius: 50%;
-            transition: all 0.3s ease;
+            width: 24px;
+            height: 24px;
+            font-size: 14px;
+            line-height: 1;
+            cursor: pointer;
+            color: #dc3545;
         }
 
-        .back-to-top:hover {
-            background-color: #e85d2e;
-            transform: translateY(-2px);
+        .delete-image:hover {
+            background-color: #dc3545;
+            color: white;
         }
 
-        .back-to-top.show {
-            display: block;
+        #uploadError {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .progress {
+            height: 0.75rem;
+            border-radius: 1rem;
+            background-color: #e9ecef;
+        }
+
+        .progress-bar {
+            background-color: #0d6efd;
+            border-radius: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+        }
+
+        .section-header h1 {
+            color: #344767;
+            font-weight: 700;
+        }
+
+        .section-header p {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        .form-step {
+            background-color: #fff;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
         }
     </style>
 </head>
-
 <body>
-    <!-- Navigation -->
+    <!-- Navigation remains the same -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand" href="index.html">
@@ -54,22 +200,13 @@
                         <a class="nav-link" href="index.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#services">Services</a>
+                        <a class="nav-link" href="index.html#services">Services</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#about">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html#testimonials">Testimonials</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html#contact">Contact</a>
+                        <a class="nav-link" href="index.html#about">About</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="login.html">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link request-btn" href="service-request.html">Get a Quote</a>
                     </li>
                 </ul>
             </div>
@@ -77,419 +214,228 @@
     </nav>
 
     <!-- Service Request Form -->
-    <section class="service-request-section">
+    <section class="service-request-section mt-5 pt-5">
         <div class="container">
-            <div class="section-header text-center">
+            <div class="section-header text-center mb-5">
                 <h1>Request Our Services</h1>
                 <p>Tell us about your project and we'll get back to you within 24 hours.</p>
             </div>
-            <div class="service-request-form">
-                <!-- Progress Bar -->
-                <div class="progress mb-4">
-                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25"
-                        aria-valuemin="0" aria-valuemax="100"></div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <!-- Progress Bar -->
+                    <div class="progress mb-4">
+                        <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+
+                    <!-- Form -->
+                    <form id="serviceRequestForm">
+                        <!-- Step 1: Service Details -->
+                        <div class="form-step">
+                            <h4 class="mb-4">Service Details</h4>
+                            <div class="mb-3">
+                                <label for="serviceType" class="form-label">Service Type <span class="text-danger">*</span></label>
+                                <select class="form-control" id="serviceType" required>
+                                    <option value="">Select a service</option>
+                                    <option value="transportation">Transportation Services</option>
+                                    <option value="lawncare">Lawn Care Services</option>
+                                </select>
+                                <div class="invalid-feedback">Please select a service type</div>
+                            </div>
+
+                            <!-- Transportation Options -->
+                            <div class="transportation-options d-none">
+                                <div class="mb-3">
+                                    <label for="transportationType" class="form-label">Transportation Type <span class="text-danger">*</span></label>
+                                    <select class="form-control" id="transportationType">
+                                        <option value="">Select transportation type</option>
+                                        <option value="local-moving">Local Moving</option>
+                                        <option value="furniture">Furniture Transportation</option>
+                                        <option value="delivery">Delivery Services</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a transportation type</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="distance" class="form-label">Estimated Distance (miles) <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="distance" min="1" placeholder="Enter estimated distance">
+                                    <div class="invalid-feedback">Please enter the estimated distance</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="itemSize" class="form-label">Load Size <span class="text-danger">*</span></label>
+                                    <select class="form-control" id="itemSize">
+                                        <option value="">Select load size</option>
+                                        <option value="small">Small (Few Items)</option>
+                                        <option value="medium">Medium (Room/Apartment)</option>
+                                        <option value="large">Large (House)</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select the load size</div>
+                                </div>
+                            </div>
+
+                            <!-- Lawn Care Options -->
+                            <div class="lawncare-options d-none">
+                                <div class="mb-3">
+                                    <label for="lawncareType" class="form-label">Lawn Care Type <span class="text-danger">*</span></label>
+                                    <select class="form-control" id="lawncareType">
+                                        <option value="">Select lawn care type</option>
+                                        <option value="mowing">Regular Lawn Mowing</option>
+                                        <option value="trimming">Edge Trimming</option>
+                                        <option value="cleanup">Yard Cleanup</option>
+                                        <option value="treatment">Grass Treatment</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a lawn care type</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="lawnSize" class="form-label">Lawn Size (sq ft) <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="lawnSize" min="100" placeholder="Enter lawn size">
+                                    <div class="invalid-feedback">Please enter the lawn size</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="lawnCondition" class="form-label">Current Lawn Condition <span class="text-danger">*</span></label>
+                                    <select class="form-control" id="lawnCondition">
+                                        <option value="">Select condition</option>
+                                        <option value="good">Good - Regular maintenance needed</option>
+                                        <option value="fair">Fair - Some attention required</option>
+                                        <option value="poor">Poor - Significant work needed</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select the lawn condition</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Contact Information -->
+                        <div class="form-step d-none">
+                            <h4 class="mb-4">Contact Information</h4>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="name" required>
+                                <div class="invalid-feedback">Please enter your name</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" id="email" required>
+                                <div class="invalid-feedback">Please enter a valid email</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone">
+                                <div class="text-muted">Optional - Format: (123) 456-7890</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Location & Schedule -->
+                        <div class="form-step d-none">
+                            <h4 class="mb-4">Location & Schedule</h4>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Service Address <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="address" required>
+                                <div class="invalid-feedback">Please enter the service address</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="preferredDate" class="form-label">Preferred Date <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="preferredDate" required>
+                                <div class="invalid-feedback">Please select a preferred date</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="additionalDetails" class="form-label">Additional Details</label>
+                                <textarea class="form-control" id="additionalDetails" rows="3" 
+                                    placeholder="Any specific requirements or special instructions (optional)"></textarea>
+                            </div>
+
+                            <!-- Image Upload Section -->
+                            <div class="mb-4">
+                                <label class="form-label">Upload Images <small class="text-muted">(Max 5 files, 5MB each)</small></label>
+                                <div class="image-upload-container">
+                                    <div class="custom-file-upload">
+                                        <input type="file" class="form-control" id="imageUpload" accept="image/*" multiple
+                                            onchange="handleImageUpload(this)">
+                                    </div>
+                                    <div id="imagePreviewContainer" class="mt-3">
+                                        <!-- Image previews will be added here -->
+                                    </div>
+                                    <div id="uploadError" class="text-danger mt-2"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Review & Payment -->
+                        <div class="form-step d-none">
+                            <h4 class="mb-4">Review & Payment</h4>
+
+                            <!-- Service Review -->
+                            <div class="review-section mb-4">
+                                <h5>Service Details</h5>
+                                <div id="serviceReview">
+                                    <!-- Will be populated by JavaScript -->
+                                </div>
+                            </div>
+
+                            <!-- Contact Review -->
+                            <div class="review-section mb-4">
+                                <h5>Contact Information</h5>
+                                <div id="contactReview">
+                                    <!-- Will be populated by JavaScript -->
+                                </div>
+                            </div>
+
+                            <!-- Schedule Review -->
+                            <div class="review-section mb-4">
+                                <h5>Schedule & Location</h5>
+                                <div id="scheduleReview">
+                                    <!-- Will be populated by JavaScript -->
+                                </div>
+                            </div>
+                            
+                            <!-- Price Summary -->
+                            <div class="price-summary mb-4">
+                                <h5 class="mb-3">Price Breakdown</h5>
+                                <div id="finalPriceBreakdown">
+                                    <!-- Will be populated by JavaScript -->
+                                </div>
+                                <div class="total-price">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span>Total Amount:</span>
+                                        <span id="finalTotalPrice">$0.00</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Payment Method Selection -->
+                            <div class="mb-3">
+                                <label for="paymentMethod" class="form-label">Payment Method <span class="text-danger">*</span></label>
+                                <select class="form-control" id="paymentMethod" required>
+                                    <option value="">Select payment method</option>
+                                    <option value="cash">Cash on Service</option>
+                                    <option value="card">Credit/Debit Card</option>
+                                    <option value="bank">Bank Transfer</option>
+                                    <option value="mobile">Mobile Money</option>
+                                </select>
+                                <div class="invalid-feedback">Please select a payment method</div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-secondary" id="prevStep" style="display: none;">Previous</button>
+                            <button type="button" class="btn btn-primary" id="nextStep">Next</button>
+                            <button type="submit" class="btn btn-success" id="submitForm" style="display: none;">Submit Request</button>
+                        </div>
+                    </form>
                 </div>
-
-                <!-- Form -->
-                <form id="serviceRequestForm">
-                    <!-- Step 1: Service Details -->
-                    <div class="form-step">
-                        <h4 class="mb-4">Service Details</h4>
-                        <div class="mb-3">
-                            <label for="serviceType" class="form-label">Service Type <span
-                                    class="text-danger">*</span></label>
-                            <select class="form-control" id="serviceType" required>
-                                <option value="">Select a service</option>
-                                <option value="transportation">Transportation Services</option>
-                                <option value="lawncare">Lawn Care Services</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3 transportation-options d-none">
-                            <label for="transportationType" class="form-label">Transportation Type <span
-                                    class="text-danger">*</span></label>
-                            <select class="form-control" id="transportationType" required>
-                                <option value="">Select transportation type</option>
-                                <option value="local-moving">Local Moving</option>
-                                <option value="furniture">Furniture Transportation</option>
-                                <option value="delivery">Delivery Services</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3 transportation-options d-none">
-                            <label for="distance" class="form-label">Estimated Distance (miles) <span
-                                    class="text-danger">*</span></label>
-                            <input type="number" class="form-control" id="distance" min="1"
-                                placeholder="Enter estimated distance" required>
-                        </div>
-
-                        <div class="mb-3 transportation-options d-none">
-                            <label for="itemSize" class="form-label">Load Size <span
-                                    class="text-danger">*</span></label>
-                            <select class="form-control" id="itemSize" required>
-                                <option value="">Select load size</option>
-                                <option value="small">Small (Few Items)</option>
-                                <option value="medium">Medium (Room/Apartment)</option>
-                                <option value="large">Large (House)</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3 lawncare-options d-none">
-                            <label for="lawncareType" class="form-label">Lawn Care Type <span
-                                    class="text-danger">*</span></label>
-                            <select class="form-control" id="lawncareType" required>
-                                <option value="">Select lawn care type</option>
-                                <option value="mowing">Regular Lawn Mowing</option>
-                                <option value="trimming">Edge Trimming</option>
-                                <option value="cleanup">Yard Cleanup</option>
-                                <option value="treatment">Grass Treatment</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3 lawncare-options d-none">
-                            <label for="lawnSize" class="form-label">Lawn Size (sq ft) <span
-                                    class="text-danger">*</span></label>
-                            <input type="number" class="form-control" id="lawnSize" min="100"
-                                placeholder="Enter lawn size" required>
-                        </div>
-
-                        <div class="mb-3 lawncare-options d-none">
-                            <label for="lawnCondition" class="form-label">Current Lawn Condition <span
-                                    class="text-danger">*</span></label>
-                            <select class="form-control" id="lawnCondition" required>
-                                <option value="">Select condition</option>
-                                <option value="good">Good - Regular maintenance needed</option>
-                                <option value="fair">Fair - Some attention required</option>
-                                <option value="poor">Poor - Significant work needed</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="urgency" class="form-label">Service Timeline <span
-                                    class="text-danger">*</span></label>
-                            <select class="form-control" id="urgency" required>
-                                <option value="">Select preferred timeline</option>
-                                <option value="scheduled">Scheduled Service</option>
-                                <option value="within-week">Within 1 Week</option>
-                                <option value="within-3days">Within 3 Days</option>
-                                <option value="next-day">Next Day Service</option>
-                                <option value="same-day">Same Day Service (Additional Fee)</option>
-                                <option value="">Select preferred timeline</option>
-                                <option value="scheduled">Scheduled Service</option>
-                                <option value="within-week">Within 1 Week</option>
-                                <option value="within-3days">Within 3 Days</option>
-                                <option value="next-day">Next Day Service</option>
-                                <option value="same-day">Same Day Service (Additional Fee)</option>
-                            </select>
-                        </div>
-
-                        <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-primary next-step">Next</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 2: Location & Schedule -->
-                    <div class="form-step d-none">
-                        <h4 class="mb-4">Location & Schedule</h4>
-
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="name" required>
-                            <div class="invalid-feedback">Please enter your full name.</div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Phone Number <span class="text-danger">*</span></label>
-                            <input type="tel" class="form-control" id="phone" required>
-                            <div class="invalid-feedback">Please enter your phone number.</div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="address" class="form-label">Address <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="address" required>
-                            <div class="invalid-feedback">Please enter your address.</div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="serviceDate" class="form-label">Service Date <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="serviceDate" required>
-                            <div class="invalid-feedback">Please select a service date.</div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="timeSlot" class="form-label">Time Slot <span class="text-danger">*</span></label>
-                            <select class="form-control" id="timeSlot" required>
-                                <option value="">Select a time slot</option>
-                                <option value="morning">Morning</option>
-                                <option value="afternoon">Afternoon</option>
-                                <option value="evening">Evening</option>
-                            </select>
-                            <div class="invalid-feedback">Please select a time slot.</div>
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-secondary prev-step">Previous</button>
-                            <button type="button" class="btn btn-primary next-step">Next</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 3: Payment Preference -->
-                    <!-- Step 3: Payment Preference -->
-                    <div class="form-step d-none">
-                        <h4 class="mb-4">Payment Preference</h4>
-                        <h4 class="mb-4">Payment Preference</h4>
-
-                        <div class="mb-4">
-                            <label class="form-label">Select Payment Method <span class="text-danger">*</span></label>
-                            <div class="payment-options">
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="radio" name="paymentMethod" id="cashPayment"
-                                        value="cash" required>
-                                    <label class="form-check-label" for="cashPayment">
-                                        <i class="fas fa-money-bill-wave me-2"></i>Cash Payment
-                                        <small class="d-block text-muted">Pay in cash after service completion</small>
-                                    </label>
-                                </div>
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="radio" name="paymentMethod" id="cardPayment"
-                                        value="card">
-                                    <label class="form-check-label" for="cardPayment">
-                                        <i class="fas fa-credit-card me-2"></i>Credit/Debit Card
-                                        <small class="d-block text-muted">Secure payment via credit or debit
-                                            card</small>
-                                    </label>
-                                </div>
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" type="radio" name="paymentMethod" id="paypalPayment"
-                                        value="paypal">
-                                    <label class="form-check-label" for="paypalPayment">
-                                        <i class="fab fa-paypal me-2"></i>PayPal
-                                        <small class="d-block text-muted">Safe and secure payment via PayPal</small>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle me-2"></i>
-                            <strong>Note:</strong> Your payment method will be processed only after you approve our
-                            detailed quote. We'll calculate the exact price based on the service details and contact you
-                            within 24 hours.
-                        </div>
-
-                        <div class="estimated-price-section mb-4 d-none">
-                            <h5>Estimated Price Range</h5>
-                            <div class="price-range alert alert-secondary">
-                                <i class="fas fa-calculator me-2"></i>
-                                <span id="estimatedPrice">Calculating...</span>
-                            </div>
-                            <small class="text-muted">* Final price may vary based on actual service
-                                requirements</small>
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-secondary prev-step">Previous</button>
-                            <button type="button" class="btn btn-primary next-step">Next</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 4: Photos & Additional Info -->
-                    <div class="form-step d-none">
-                        <h4 class="mb-4">Additional Information (Optional)</h4>
-                        <div class="mb-4">
-                            <label class="form-label">Upload Images (Max 5 images, 5MB each)</label>
-                            <div id="uploadArea" class="dropzone"></div>
-                            <div id="preview" class="mt-2"></div>
-                            <img id="imgPreview" src="#" alt="Image Preview" class="mt-3" style="display:none; width: 100%; max-width: 300px;" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="specialInstructions" class="form-label">Special Instructions (Optional)</label>
-                            <textarea class="form-control" id="specialInstructions" rows="3" placeholder="Any additional information or special requirements"></textarea>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-secondary prev-step">Previous</button>
-                            <button type="submit" class="btn btn-primary">Submit Request</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 5: Review & Submit -->
-                    <div class="form-step d-none">
-                        <h4 class="mb-4">Review & Submit</h4>
-
-                        <div id="requestSummary" class="mb-4">
-                            <!-- Summary will be populated by JavaScript -->
-                        </div>
-
-                        <div class="form-check mb-4">
-                            <input class="form-check-input" type="checkbox" id="termsCheck" required>
-                            <label class="form-check-label" for="termsCheck">
-                                I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">terms and
-                                    conditions</a>
-                            </label>
-                            <div class="invalid-feedback">You must agree to the terms and conditions</div>
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-secondary prev-step">Previous</button>
-                            <button type="submit" class="btn btn-primary">Submit Request</button>
-                        </div>
-                    </div>
-
-                    <!-- Additional Details -->
-                    <div class="form-step d-none">
-                        <h4 class="mb-4">Additional Details (Optional)</h4>
-                        <div class="mb-3">
-                            <label for="taskDetails" class="form-label">Additional Details</label>
-                            <textarea class="form-control" id="taskDetails" rows="4"
-                                placeholder="Please provide any specific requirements or details about your service needs"></textarea>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary">Submit Request</button>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
     </section>
 
-    <!-- Login Modal -->
-    <div class="modal fade" id="loginModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Login</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="loginForm">
-                        <div class="mb-3">
-                            <label for="loginEmail" class="form-label">Email address <span
-                                    class="text-danger">*</span></label>
-                            <input type="email" class="form-control" id="loginEmail" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="loginPassword" class="form-label">Password <span
-                                    class="text-danger">*</span></label>
-                            <input type="password" class="form-control" id="loginPassword" required>
-                        </div>
-                        <div class="mb-3">
-                            <a href="#" class="text-primary" data-bs-toggle="modal"
-                                data-bs-target="#forgotPasswordModal">Forgot Password?</a>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Login</button>
-                    </form>
-                    <hr>
-                    <p class="text-center mb-0">
-                        Don't have an account?
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Register</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Register Modal -->
-    <div class="modal fade" id="registerModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Register</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="registerForm">
-                        <div class="mb-3">
-                            <label for="registerName" class="form-label">Full Name <span
-                                    class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="registerName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="registerEmail" class="form-label">Email address <span
-                                    class="text-danger">*</span></label>
-                            <input type="email" class="form-control" id="registerEmail" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="registerPhone" class="form-label">Phone Number <span
-                                    class="text-danger">*</span></label>
-                            <input type="tel" class="form-control" id="registerPhone" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="registerPassword" class="form-label">Password <span
-                                    class="text-danger">*</span></label>
-                            <input type="password" class="form-control" id="registerPassword" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Confirm Password <span
-                                    class="text-danger">*</span></label>
-                            <input type="password" class="form-control" id="confirmPassword" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Register</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Forgot Password Modal -->
-    <div class="modal fade" id="forgotPasswordModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Reset Password</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="forgotPasswordForm">
-                        <div class="mb-3">
-                            <label for="resetEmail" class="form-label">Email address <span
-                                    class="text-danger">*</span></label>
-                            <input type="email" class="form-control" id="resetEmail" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Reset Password</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Back to Top Button -->
-    <button class="back-to-top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <script>
-        // Back to top button
-        const backToTop = document.querySelector('.back-to-top');
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 100) {
-                backToTop.classList.add('show');
-            } else {
-                backToTop.classList.remove('show');
-            }
-        });
-
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Sticky Navigation
-        window.addEventListener('scroll', function () {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
     <script src="js/service-request.js"></script>
 </body>
-
 </html>
