@@ -1,6 +1,25 @@
 // Form data object to store all form inputs
 let formData = {};
 
+// State cities data
+const stateCities = {
+    'OH': [
+        'Columbus', 'Cleveland', 'Cincinnati', 'Toledo', 'Akron', 'Dayton', 
+        'Parma', 'Canton', 'Youngstown', 'Lorain', 'Hamilton', 'Springfield', 
+        'Kettering', 'Elyria', 'Lakewood', 'Newark', 'Cuyahoga Falls', 'Middletown'
+    ],
+    'IN': [
+        'Indianapolis', 'Fort Wayne', 'Evansville', 'South Bend', 'Carmel', 
+        'Bloomington', 'Fishers', 'Hammond', 'Gary', 'Muncie', 'Lafayette', 
+        'Terre Haute', 'Kokomo', 'Anderson', 'Noblesville', 'Greenwood'
+    ],
+    'IL': [
+        'Chicago', 'Aurora', 'Rockford', 'Joliet', 'Naperville', 'Springfield',
+        'Peoria', 'Elgin', 'Waukegan', 'Champaign', 'Bloomington', 'Decatur',
+        'Evanston', 'Schaumburg', 'Bolingbrook', 'Arlington Heights'
+    ]
+};
+
 // Initialize the form
 document.addEventListener('DOMContentLoaded', function() {
     // Add event listener for final form submission
@@ -8,6 +27,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     initializeForm();
     setupEventListeners();
+
+    // Initialize state change handler
+    const stateSelect = document.getElementById('state');
+    if (stateSelect) {
+        stateSelect.addEventListener('change', updateCityList);
+    }
 });
 
 function initializeForm() {
@@ -218,6 +243,7 @@ function populateReviewSection() {
         <h5>Location & Schedule</h5>
         <p><strong>Address:</strong> ${formData.address || ''}</p>
         <p><strong>State:</strong> ${formData.state || ''}</p>
+        <p><strong>City:</strong> ${formData.city || ''}</p>
         <p><strong>Preferred Date:</strong> ${formData.preferredDate ? new Date(formData.preferredDate).toLocaleDateString() : ''}</p>
         ${formData.additionalDetails ? `<p><strong>Additional Details:</strong> ${formData.additionalDetails}</p>` : ''}
     `;
@@ -493,5 +519,25 @@ function resetForm() {
     const previewContainer = document.getElementById('imagePreviewContainer');
     if (previewContainer) {
         previewContainer.innerHTML = '';
+    }
+}
+
+function updateCityList() {
+    const stateSelect = document.getElementById('state');
+    const cityList = document.getElementById('cityList');
+    const cityInput = document.getElementById('city');
+    
+    // Clear existing options
+    cityList.innerHTML = '';
+    cityInput.value = '';
+
+    const selectedState = stateSelect.value;
+    if (selectedState && stateCities[selectedState]) {
+        // Add cities for selected state
+        stateCities[selectedState].forEach(city => {
+            const option = document.createElement('option');
+            option.value = city;
+            cityList.appendChild(option);
+        });
     }
 }
