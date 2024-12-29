@@ -140,9 +140,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check if user is already logged in
     function checkLoginState() {
         const isLoggedIn = localStorage.getItem('isLoggedIn') || sessionStorage.getItem('isLoggedIn');
-        const isLoggingOut = new URLSearchParams(window.location.search).get('logout') === 'true';
+        const params = new URLSearchParams(window.location.search);
+        const isLoggingOut = params.get('logout') === 'true';
+        const isLoginAction = params.get('action') === 'login';
         
-        if (isLoggedIn === 'true' && !isLoggingOut) {
+        // Only redirect to dashboard if user is logged in AND not logging out AND not explicitly trying to login
+        if (isLoggedIn === 'true' && !isLoggingOut && !isLoginAction) {
             window.location.replace('dashboard.html');
         }
     }
