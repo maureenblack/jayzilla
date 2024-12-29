@@ -172,6 +172,20 @@ body {
     }
 }
 
+/* Navbar size reduction for login page */
+.navbar {
+    padding: 0.5rem 1rem;
+    background-color: var(--dark-color);
+}
+
+.navbar .logo {
+    height: 40px; /* Reduced from original size */
+}
+
+.navbar-nav .nav-link {
+    padding: 0.5rem 1rem;
+}
+
 /* Hero Section */
 .hero-section {
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../images/beautifulland.png');
@@ -985,7 +999,7 @@ footer {
 }
 
 .service-request-section {
-    padding: 120px 0 80px;
+    padding: 2rem 0;
     background: linear-gradient(135deg, var(--dark-color) 0%, #1a1a1a 100%);
     min-height: 100vh;
 }
@@ -1182,12 +1196,12 @@ footer {
     text-align: center;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     max-width: 800px;
-    margin: 2rem auto;
+    margin: 0 auto;
 }
 
 .success-message .success-icon {
     color: #28a745;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .success-message h4 {
@@ -1386,6 +1400,64 @@ footer {
     .pricing-card {
         margin-bottom: 2rem;
     }
+}
+
+/* Login Page Styles */
+.login-section {
+    background: linear-gradient(135deg, var(--dark-color) 0%, #1a1a1a 100%);
+    min-height: calc(100vh - 60px); /* Subtract reduced navbar height */
+    padding-top: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.login-box {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    margin-top: 1rem;
+}
+
+.login-box h2 {
+    color: var(--dark-color);
+    font-weight: 600;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #495057;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+.btn-outline-secondary {
+    border-color: #ced4da;
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus {
+    background-color: #f8f9fa;
+    border-color: #ced4da;
+    color: var(--primary-color);
+}
+
+.forgot-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
 /* About Section */
