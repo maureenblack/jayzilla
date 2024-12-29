@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const passwordInput = document.getElementById('password');
     const confirmPasswordInput = document.getElementById('confirmPassword');
     const registerError = document.getElementById('registerError');
+    const fullNameInput = document.getElementById('fullName');
+
+    // Set max length for full name
+    fullNameInput.setAttribute('maxlength', '50');
 
     // Toggle password visibility
     function togglePasswordVisibility(button, input) {
@@ -36,6 +40,10 @@ document.addEventListener('DOMContentLoaded', function() {
         return phoneRegex.test(phone);
     }
 
+    function validateFullName(name) {
+        return name.length >= 2 && name.length <= 50 && /^[a-zA-Z\s-']+$/.test(name);
+    }
+
     function showError(message) {
         registerError.textContent = message;
         registerError.classList.remove('d-none');
@@ -51,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
         hideError();
 
         // Get form values
-        const fullName = document.getElementById('fullName').value.trim();
+        const fullName = fullNameInput.value.trim();
         const email = document.getElementById('email').value.trim();
         const phone = document.getElementById('phone').value.trim();
         const password = passwordInput.value;
@@ -61,6 +69,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Validation
         if (!fullName || !email || !phone || !password || !confirmPassword) {
             showError('Please fill in all fields');
+            return;
+        }
+
+        if (!validateFullName(fullName)) {
+            showError('Please enter a valid name (2-50 characters, letters only)');
             return;
         }
 

@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const spinner = submitBtn.querySelector('.spinner-border');
         
         submitBtn.disabled = true;
-        btnText.textContent = 'Logging in...';
+        btnText.textContent = 'Verifying...';
         spinner.classList.remove('d-none');
         hideError();
 
@@ -69,32 +69,39 @@ document.addEventListener('DOMContentLoaded', function() {
                     sessionStorage.setItem('userEmail', email);
                 }
 
-                // Move pending user to registered user
+                // Move pending user to registered user if exists
                 if (userData) {
                     localStorage.setItem('registeredUser', pendingUserData);
                     localStorage.removeItem('pendingUser');
                 }
 
-                // Show welcome back message
+                // Get first name (limited to 20 characters)
+                const firstName = userData ? 
+                    userData.fullName.split(' ')[0].substring(0, 20) : 
+                    'User';
+
+                // Replace form with welcome message
                 const loginBox = document.querySelector('.login-box');
                 loginBox.innerHTML = `
                     <div class="text-center">
                         <div class="success-icon mb-4">
                             <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
                         </div>
-                        <h3 class="mb-3">Welcome Back${userData ? ', ' + userData.fullName : ''}!</h3>
-                        <p class="lead mb-4">You have successfully logged in.</p>
-                        <div class="spinner-border text-primary mb-4" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                        <h3 class="mb-3">Welcome Back, ${firstName}!</h3>
+                        <p class="lead mb-4">Login successful</p>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <p class="mb-0">Click below to access your dashboard</p>
+                            </div>
                         </div>
-                        <p>Redirecting to dashboard...</p>
+                        <div class="mt-4">
+                            <a href="dashboard.html" class="btn btn-primary btn-lg">
+                                <i class="fas fa-columns me-2"></i>Go to Dashboard
+                            </a>
+                        </div>
                     </div>
                 `;
 
-                // Redirect to dashboard after showing welcome message
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 2000);
             } else {
                 showError('Invalid email or password');
                 submitBtn.disabled = false;
