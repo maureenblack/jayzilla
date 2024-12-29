@@ -79,7 +79,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        if (!terms) {
+        // Check if terms are agreed to
+        const agreeTerms = document.getElementById('agreeTerms');
+        if (!agreeTerms.checked) {
             showError('Please agree to the Terms of Service and Privacy Policy');
             return;
         }
