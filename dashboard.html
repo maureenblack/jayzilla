@@ -3,107 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Jayzilla Services</title>
-    <link rel="icon" type="image/png" href="./images/icon.png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Dashboard - Jayzilla</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="dashboard-body">
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="./images/logo.png" alt="Jayzilla Services Logo" class="navbar-logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link btn btn-primary text-white px-3" href="service-request.html">New Request</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle"></i>
-                            <span id="userName">User</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">Profile</a></li>
-                            <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Dashboard Content -->
     <div class="dashboard-container">
-        <div class="container py-5">
-            <h1 class="text-center">Login to Your Account</h1>
-            <form id="loginForm">
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" required>
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Login</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Profile Modal -->
-    <div class="modal fade" id="profileModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Profile Settings</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="profileForm">
-                        <div class="mb-3">
-                            <label class="form-label">Name</label>
-                            <input type="text" class="form-control" id="profileName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" id="profileEmail" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Phone</label>
-                            <input type="tel" class="form-control" id="profilePhone" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Save Changes</button>
-                    </form>
-                </div>
+        <!-- Sidebar -->
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">
+                    <img src="images/logo.png" alt="Jayzilla" height="35">
+                </a>
+                <button id="sidebarCollapse" class="btn btn-link text-light d-lg-none">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
-        </div>
-    </div>
+            <ul class="nav flex-column">
+                <li class="nav-item active">
+                    <a href="#overview" class="nav-link" data-bs-toggle="tab">
+                        <i class="fas fa-home"></i>
+                        <span>Overview</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#services" class="nav-link" data-bs-toggle="tab">
+                        <i class="fas fa-list"></i>
+                        <span>My Services</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#profile" class="nav-link" data-bs-toggle="tab">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#settings" class="nav-link" data-bs-toggle="tab">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item mt-auto">
+                    <a href="#" class="nav-link" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
 
-    <!-- Request Details Modal -->
-    <div class="modal fade" id="requestDetailsModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Request Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Navigation -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white mb-4 shadow-sm">
+                <div class="container-fluid">
+                    <button id="mobileSidebarCollapse" class="btn btn-link d-lg-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="ms-auto d-flex align-items-center">
+                        <div class="dropdown">
+                            <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="images/default-avatar.png" alt="User" class="rounded-circle me-2" width="32" height="32">
+                                <span id="userName">User</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="#profile" data-bs-toggle="tab">Profile</a></li>
+                                <li><a class="dropdown-item" href="#settings" data-bs-toggle="tab">Settings</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" id="topLogoutBtn">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <div id="requestDetails">
-                        <!-- Details will be populated via JavaScript -->
+            </nav>
+
+            <!-- Tab Content -->
+            <div class="container-fluid">
+                <div class="tab-content">
+                    <!-- Overview Tab -->
+                    <div class="tab-pane fade show active" id="overview">
+                        <div class="row g-4 mb-4">
+                            <div class="col-12 col-md-6 col-xl-3">
+                                <div class="card dashboard-card border-left-primary h-100">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <div class="text-xs fw-bold text-primary text-uppercase mb-1">
+                                                    Lawn Mowing Services</div>
+                                                <div class="h5 mb-0 fw-bold text-gray-800" id="lawnServicesCount">0</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-cut fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 col-xl-3">
+                                <div class="card dashboard-card border-left-success h-100">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <div class="text-xs fw-bold text-success text-uppercase mb-1">
+                                                    Transportation Services</div>
+                                                <div class="h5 mb-0 fw-bold text-gray-800" id="transportServicesCount">0</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-car fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 col-xl-3">
+                                <div class="card dashboard-card border-left-info h-100">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <div class="text-xs fw-bold text-info text-uppercase mb-1">Active Requests</div>
+                                                <div class="h5 mb-0 fw-bold text-gray-800" id="activeServicesCount">0</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 col-xl-3">
+                                <div class="card dashboard-card border-left-warning h-100">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <div class="text-xs fw-bold text-warning text-uppercase mb-1">
+                                                    Completed Services</div>
+                                                <div class="h5 mb-0 fw-bold text-gray-800" id="completedServicesCount">0</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Services -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="m-0 fw-bold">Recent Services</h6>
+                                <a href="#services" class="btn btn-sm btn-primary" data-bs-toggle="tab">View All</a>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="recentServicesTable">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Service</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Services Tab -->
+                    <div class="tab-pane fade" id="services">
+                        <div class="card shadow-sm">
+                            <div class="card-header">
+                                <h6 class="m-0 fw-bold">All Services</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="allServicesTable">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Service</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                                <th>Description</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Tab -->
+                    <div class="tab-pane fade" id="profile">
+                        <div class="card shadow-sm">
+                            <div class="card-header">
+                                <h6 class="m-0 fw-bold">Profile Information</h6>
+                            </div>
+                            <div class="card-body">
+                                <form id="profileForm">
+                                    <div class="row">
+                                        <div class="col-12 col-md-6 mb-3">
+                                            <label class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" id="profileName" required>
+                                        </div>
+                                        <div class="col-12 col-md-6 mb-3">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="profileEmail" required>
+                                        </div>
+                                        <div class="col-12 col-md-6 mb-3">
+                                            <label class="form-label">Phone</label>
+                                            <input type="tel" class="form-control" id="profilePhone">
+                                        </div>
+                                        <div class="col-12 col-md-6 mb-3">
+                                            <label class="form-label">Address</label>
+                                            <input type="text" class="form-control" id="profileAddress">
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Tab -->
+                    <div class="tab-pane fade" id="settings">
+                        <div class="row">
+                            <div class="col-12 col-lg-6 mb-4">
+                                <div class="card shadow-sm">
+                                    <div class="card-header">
+                                        <h6 class="m-0 fw-bold">Change Password</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="settingsForm">
+                                            <div class="mb-3">
+                                                <label class="form-label">Current Password</label>
+                                                <input type="password" class="form-control" id="currentPassword" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">New Password</label>
+                                                <input type="password" class="form-control" id="newPassword" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Confirm New Password</label>
+                                                <input type="password" class="form-control" id="confirmNewPassword" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Update Password</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 mb-4">
+                                <div class="card shadow-sm">
+                                    <div class="card-header">
+                                        <h6 class="m-0 fw-bold">Notification Settings</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                                                <label class="form-check-label">Email Notifications</label>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="smsNotifications" checked>
+                                                <label class="form-check-label">SMS Notifications</label>
+                                            </div>
+                                        </div>
+                                        <button type="button" id="saveNotificationSettings" class="btn btn-primary">Save Settings</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="js/dashboard.js"></script>
 </body>
 </html>
