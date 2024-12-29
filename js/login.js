@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
 
         // Get form values
-        const email = document.getElementById('email').value;
+        const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value;
         const rememberMe = document.getElementById('rememberMe').checked;
 
@@ -47,9 +47,20 @@ document.addEventListener('DOMContentLoaded', function() {
         hideError();
 
         try {
-            // For demo purposes, check if email contains "admin"
-            if (email.includes('admin')) {
-                // Store login state if remember me is checked
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            // Get pending user data if available
+            const pendingUserData = localStorage.getItem('pendingUser');
+            let userData = null;
+            
+            if (pendingUserData) {
+                userData = JSON.parse(pendingUserData);
+            }
+
+            // For demo purposes, check if email matches registered email or contains "admin"
+            if ((userData && email === userData.email) || email.includes('admin')) {
+                // Store login state
                 if (rememberMe) {
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('userEmail', email);
@@ -58,15 +69,40 @@ document.addEventListener('DOMContentLoaded', function() {
                     sessionStorage.setItem('userEmail', email);
                 }
 
-                // Redirect to dashboard
-                window.location.href = 'dashboard.html';
+                // Move pending user to registered user
+                if (userData) {
+                    localStorage.setItem('registeredUser', pendingUserData);
+                    localStorage.removeItem('pendingUser');
+                }
+
+                // Show welcome back message
+                const loginBox = document.querySelector('.login-box');
+                loginBox.innerHTML = `
+                    <div class="text-center">
+                        <div class="success-icon mb-4">
+                            <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                        </div>
+                        <h3 class="mb-3">Welcome Back${userData ? ', ' + userData.fullName : ''}!</h3>
+                        <p class="lead mb-4">You have successfully logged in.</p>
+                        <div class="spinner-border text-primary mb-4" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p>Redirecting to dashboard...</p>
+                    </div>
+                `;
+
+                // Redirect to dashboard after showing welcome message
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
             } else {
                 showError('Invalid email or password');
+                submitBtn.disabled = false;
+                btnText.textContent = 'Login';
+                spinner.classList.add('d-none');
             }
         } catch (error) {
             showError('An error occurred. Please try again.');
-        } finally {
-            // Reset button state
             submitBtn.disabled = false;
             btnText.textContent = 'Login';
             spinner.classList.add('d-none');

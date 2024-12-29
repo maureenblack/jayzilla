@@ -24,11 +24,11 @@ function initializeForm() {
 }
 
 function setupEventListeners() {
-    // Add form submission listeners for each step
-    const finalForm = document.getElementById('finalForm');
-    if (finalForm) {
-        finalForm.addEventListener('submit', handleFinalSubmit);
-    }
+    // Add form submission listeners
+    document.getElementById('serviceDetailsForm').addEventListener('submit', handleFormSubmit);
+    document.getElementById('contactForm').addEventListener('submit', handleFormSubmit);
+    document.getElementById('locationForm').addEventListener('submit', handleFormSubmit);
+    document.getElementById('finalForm').addEventListener('submit', handleFinalSubmit);
 
     // Add image upload handler
     const imageUpload = document.getElementById('imageUpload');
@@ -323,91 +323,89 @@ function calculateFinalPrice() {
 
 async function handleFinalSubmit(event) {
     event.preventDefault();
-    console.log('Form submitted'); // Debug log
 
-    const form = event.target;
-    if (!validateForm(form)) {
+    if (!validateForm(event.target)) {
         return;
     }
 
+    // Add payment method to form data
+    formData.paymentMethod = document.getElementById('paymentMethod').value;
+
     try {
         // Show loading state
-        const submitButton = form.querySelector('button[type="submit"]');
+        const submitButton = event.target.querySelector('button[type="submit"]');
         submitButton.disabled = true;
         submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
 
-        // Add payment method to form data
-        formData.paymentMethod = document.getElementById('paymentMethod').value;
-
         // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate network delay
+        await submitFormData(formData);
 
-        console.log('Showing success message'); // Debug log
-
-        // Get the form wrapper
+        // Replace form with success message
         const formWrapper = document.getElementById('serviceRequestFormWrapper');
-        
-        // Create success message
-        const successMessage = document.createElement('div');
-        successMessage.className = 'success-message';
-        successMessage.innerHTML = `
-            <div class="success-icon">
-                <i class="fas fa-check-circle fa-4x"></i>
-            </div>
-            <h4 class="mt-4">Thank You for Choosing Our Services!</h4>
-            <p class="lead">Your request has been successfully submitted.</p>
-            
-            <div class="order-details mt-4">
-                <h5>Order Details</h5>
-                <div class="detail-item">
-                    <span>Reference Number:</span>
-                    <span>SR-${Date.now()}</span>
-                </div>
-                <div class="detail-item">
-                    <span>Service Type:</span>
-                    <span>${formData.serviceType ? formData.serviceType.charAt(0).toUpperCase() + formData.serviceType.slice(1) : ''}</span>
-                </div>
-                <div class="detail-item">
-                    <span>Total Amount:</span>
-                    <span>${document.getElementById('finalTotalPrice').textContent}</span>
-                </div>
-            </div>
+        const totalAmount = document.getElementById('finalTotalPrice').textContent;
+        const scheduledDate = new Date(formData.preferredDate).toLocaleDateString();
+        const referenceNumber = `SR-${Date.now()}`;
 
-            <div class="next-steps mt-4">
-                <h5>What Happens Next?</h5>
-                <ul>
-                    <li>You'll receive a confirmation email shortly</li>
-                    <li>Our team will review your request within 24 hours</li>
-                    <li>We'll contact you to confirm the details</li>
-                </ul>
-            </div>
+        formWrapper.innerHTML = `
+            <div class="success-message">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle fa-4x mb-4"></i>
+                </div>
+                <h4>Thank You for Choosing Jayzilla Services!</h4>
+                <p class="lead mb-4">Your service request has been successfully submitted.</p>
+                
+                <div class="order-details">
+                    <div class="detail-item">
+                        <span class="label">Reference Number:</span>
+                        <span class="value">${referenceNumber}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Service Type:</span>
+                        <span class="value">${formData.serviceType.charAt(0).toUpperCase() + formData.serviceType.slice(1)}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Scheduled Date:</span>
+                        <span class="value">${scheduledDate}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Total Amount:</span>
+                        <span class="value">${totalAmount}</span>
+                    </div>
+                </div>
 
-            <div class="action-buttons mt-4">
-                <button onclick="window.location.reload()" class="btn btn-primary me-3">
-                    Submit Another Request
-                </button>
-                <a href="index.html" class="btn btn-outline-primary">
-                    Return Home
-                </a>
+                <div class="next-steps mt-4">
+                    <h5>What's Next?</h5>
+                    <ul class="text-start">
+                        <li>You will receive a confirmation email shortly</li>
+                        <li>Our team will review your request within 24 hours</li>
+                        <li>We will contact you to confirm the details and schedule</li>
+                        <li>Save your reference number: <strong>${referenceNumber}</strong></li>
+                    </ul>
+                </div>
+
+                <div class="action-buttons mt-4">
+                    <button onclick="submitAnotherRequest()" class="btn btn-primary me-3">
+                        <i class="fas fa-plus-circle me-2"></i>Submit Another Request
+                    </button>
+                    <a href="index.html" class="btn btn-outline-primary">
+                        <i class="fas fa-home me-2"></i>Return to Home
+                    </a>
+                </div>
+
+                <div class="contact-info mt-4">
+                    <p class="mb-2">Questions? Contact us:</p>
+                    <p class="mb-0">
+                        <i class="fas fa-phone me-2"></i>+1 (555) 123-4567
+                        <span class="mx-2">|</span>
+                        <i class="fas fa-envelope me-2"></i>support@jayzilla.com
+                    </p>
+                </div>
             </div>
         `;
-
-        // Clear the form wrapper and add success message
-        formWrapper.innerHTML = '';
-        formWrapper.appendChild(successMessage);
-
-        // Scroll to success message
-        successMessage.scrollIntoView({ behavior: 'smooth' });
-
-    } catch (error) {
-        console.error('Submission error:', error); // Debug log
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'alert alert-danger mt-3';
-        errorDiv.textContent = 'There was an error submitting your request. Please try again.';
-        form.insertBefore(errorDiv, form.firstChild);
+        formWrapper.scrollIntoView({ behavior: 'smooth' });
         
-        // Re-enable submit button
-        const submitButton = form.querySelector('button[type="submit"]');
+    } catch (error) {
+        showMessage('error', 'There was an error submitting your request. Please try again.');
         submitButton.disabled = false;
         submitButton.textContent = 'Submit Request';
     }
@@ -449,6 +447,16 @@ function submitAnotherRequest() {
 
     // Scroll to top of form
     document.querySelector('.service-request-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+async function submitFormData(data) {
+    // Simulate API call
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            console.log('Form data submitted:', data);
+            resolve();
+        }, 2000);
+    });
 }
 
 function showMessage(type, message) {
