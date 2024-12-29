@@ -91,13 +91,19 @@ document.addEventListener('DOMContentLoaded', function() {
                         <p class="lead mb-4">Login successful</p>
                         <div class="card mb-4">
                             <div class="card-body">
-                                <p class="mb-0">Click below to access your dashboard</p>
+                                <h5 class="card-title mb-3">What would you like to do?</h5>
+                                <div class="d-grid gap-3">
+                                    <a href="dashboard.html" class="btn btn-primary">
+                                        <i class="fas fa-columns me-2"></i>Go to Dashboard
+                                    </a>
+                                    <a href="service-request.html" class="btn btn-outline-primary">
+                                        <i class="fas fa-tools me-2"></i>Request a Service
+                                    </a>
+                                    <a href="index.html" class="btn btn-outline-secondary">
+                                        <i class="fas fa-home me-2"></i>Return to Home
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="mt-4">
-                            <a href="dashboard.html" class="btn btn-primary btn-lg">
-                                <i class="fas fa-columns me-2"></i>Go to Dashboard
-                            </a>
                         </div>
                     </div>
                 `;
@@ -134,8 +140,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check if user is already logged in
     function checkLoginState() {
         const isLoggedIn = localStorage.getItem('isLoggedIn') || sessionStorage.getItem('isLoggedIn');
-        if (isLoggedIn === 'true') {
-            window.location.href = 'dashboard.html';
+        const isLoggingOut = new URLSearchParams(window.location.search).get('logout') === 'true';
+        
+        if (isLoggedIn === 'true' && !isLoggingOut) {
+            window.location.replace('dashboard.html');
         }
     }
 

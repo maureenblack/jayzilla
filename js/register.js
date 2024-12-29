@@ -151,15 +151,15 @@ document.addEventListener('DOMContentLoaded', function() {
                             <i class="fas fa-info-circle me-2"></i>
                             <p class="mb-2">Please proceed to login using:</p>
                             <ul class="text-start mb-0">
-                                <li>Your registered email address</li>
+                                <li>Your registered email address: <strong>${email}</strong></li>
                                 <li>The password you just created</li>
                             </ul>
                         </div>
                     </div>
                     <div class="mt-4">
-                        <button onclick="window.location.href='login.html'" class="btn btn-primary btn-lg">
-                            <i class="fas fa-sign-in-alt me-2"></i>Proceed to Login
-                        </button>
+                        <a href="login.html" class="btn btn-primary btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Proceed to Login Page
+                        </a>
                     </div>
                 </div>
             `;

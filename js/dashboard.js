@@ -70,15 +70,38 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Logout functionality
-    function handleLogout() {
+    function handleLogout(e) {
+        e.preventDefault();
+        
+        // Show loading state in the clicked button
+        const button = e.currentTarget;
+        const originalContent = button.innerHTML;
+        button.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Logging out...';
+        button.disabled = true;
+
+        // Clear all auth-related data
         localStorage.removeItem('isLoggedIn');
         sessionStorage.removeItem('isLoggedIn');
         localStorage.removeItem('userEmail');
-        window.location.href = 'login.html';
+        sessionStorage.removeItem('userEmail');
+        localStorage.removeItem('registeredUser');
+
+        // Brief delay to show loading state, then redirect
+        setTimeout(() => {
+            window.location.replace('login.html');
+        }, 800);
     }
 
-    document.getElementById('logoutBtn').addEventListener('click', handleLogout);
-    document.getElementById('topLogoutBtn').addEventListener('click', handleLogout);
+    // Add click handlers to both logout buttons
+    const logoutBtn = document.getElementById('logoutBtn');
+    const topLogoutBtn = document.getElementById('topLogoutBtn');
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', handleLogout);
+    }
+    if (topLogoutBtn) {
+        topLogoutBtn.addEventListener('click', handleLogout);
+    }
 
     // Profile form handling with image upload
     const profileForm = document.getElementById('profileForm');
