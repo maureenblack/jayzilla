@@ -1,460 +1,498 @@
+// Form data object to store all form inputs
+let formData = {};
+
+// Initialize the form
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('serviceRequestForm');
-    const steps = document.querySelectorAll('.form-step');
-    const progressBar = document.querySelector('.progress-bar');
-    const prevButton = document.getElementById('prevStep');
-    const nextButton = document.getElementById('nextStep');
-    const submitButton = document.getElementById('submitForm');
-    let currentStep = 0;
-    let uploadedImages = [];
-
-    // Price calculation constants
-    const PRICES = {
-        transportation: {
-            'local-moving': { base: 100, mileageRate: 2.5, sizes: { small: 1, medium: 1.5, large: 2 } },
-            'furniture': { base: 80, mileageRate: 2, sizes: { small: 1, medium: 1.75, large: 2.5 } },
-            'delivery': { base: 50, mileageRate: 1.5, sizes: { small: 1, medium: 1.25, large: 1.75 } }
-        },
-        lawncare: {
-            'mowing': { base: 30, ratePerSqFt: 0.02, conditions: { good: 1, fair: 1.2, poor: 1.5 } },
-            'trimming': { base: 25, ratePerSqFt: 0.015, conditions: { good: 1, fair: 1.2, poor: 1.4 } },
-            'cleanup': { base: 40, ratePerSqFt: 0.03, conditions: { good: 1, fair: 1.3, poor: 1.6 } },
-            'treatment': { base: 35, ratePerSqFt: 0.025, conditions: { good: 1, fair: 1.25, poor: 1.5 } }
-        }
-    };
-
-    // Image upload handler
-    function handleImageUpload(input) {
-        const files = input.files;
-        const errorDiv = document.getElementById('uploadError');
-        const previewContainer = document.getElementById('imagePreviewContainer');
-        
-        // Clear previous error messages
-        errorDiv.textContent = '';
-        
-        // Validate number of files
-        if (files.length > 5) {
-            errorDiv.textContent = 'Maximum 5 files allowed';
-            input.value = '';
-            return;
-        }
-
-        // Clear previous previews if starting fresh
-        if (files.length + uploadedImages.length > 5) {
-            errorDiv.textContent = 'Total number of files cannot exceed 5';
-            input.value = '';
-            return;
-        }
-
-        // Process each file
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            
-            // Validate file size (5MB = 5 * 1024 * 1024 bytes)
-            if (file.size > 5 * 1024 * 1024) {
-                errorDiv.textContent = `${file.name} exceeds 5MB limit`;
-                input.value = '';
-                return;
-            }
-
-            // Validate file type
-            if (!file.type.startsWith('image/')) {
-                errorDiv.textContent = `${file.name} is not an image file`;
-                input.value = '';
-                return;
-            }
-
-            // Create preview
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const preview = document.createElement('div');
-                preview.className = 'position-relative';
-                preview.innerHTML = `
-                    <img src="${e.target.result}" alt="Preview" style="width: 100px; height: 100px; object-fit: cover; border-radius: 4px;">
-                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0" 
-                        style="padding: 0.2rem 0.4rem; margin: -0.5rem -0.5rem 0 0;"
-                        onclick="this.parentElement.remove(); uploadedImages.splice(uploadedImages.indexOf('${file.name}'), 1);">×</button>
-                `;
-                previewContainer.appendChild(preview);
-            };
-            reader.readAsDataURL(file);
-            uploadedImages.push(file.name);
-        }
-    }
-    window.handleImageUpload = handleImageUpload;
-
-    // Calculate final price details
-    function calculatePriceDetails() {
-        const serviceType = document.getElementById('serviceType').value;
-        let priceDetails = { breakdown: [], total: 0 };
-
-        if (serviceType === 'transportation') {
-            const type = document.getElementById('transportationType').value;
-            const distance = parseFloat(document.getElementById('distance').value) || 0;
-            const size = document.getElementById('itemSize').value;
-
-            if (type && distance && size) {
-                const pricing = PRICES.transportation[type];
-                const basePrice = pricing.base;
-                const distanceCost = distance * pricing.mileageRate;
-                const sizeMultiplier = pricing.sizes[size];
-                const sizeAdjustment = (basePrice + distanceCost) * (sizeMultiplier - 1);
-                const total = (basePrice + distanceCost) * sizeMultiplier;
-
-                priceDetails = {
-                    breakdown: [
-                        { label: 'Base Price', amount: basePrice },
-                        { label: 'Distance Cost', amount: distanceCost },
-                        { label: 'Size Adjustment', amount: sizeAdjustment }
-                    ],
-                    total: total
-                };
-            }
-        } else if (serviceType === 'lawncare') {
-            const type = document.getElementById('lawncareType').value;
-            const size = parseFloat(document.getElementById('lawnSize').value) || 0;
-            const condition = document.getElementById('lawnCondition').value;
-
-            if (type && size && condition) {
-                const pricing = PRICES.lawncare[type];
-                const basePrice = pricing.base;
-                const areaCost = size * pricing.ratePerSqFt;
-                const conditionMultiplier = pricing.conditions[condition];
-                const conditionAdjustment = (basePrice + areaCost) * (conditionMultiplier - 1);
-                const total = (basePrice + areaCost) * conditionMultiplier;
-
-                priceDetails = {
-                    breakdown: [
-                        { label: 'Base Price', amount: basePrice },
-                        { label: 'Area Cost', amount: areaCost },
-                        { label: 'Condition Adjustment', amount: conditionAdjustment }
-                    ],
-                    total: total
-                };
-            }
-        }
-
-        return priceDetails;
-    }
-
-    // Update review sections
-    function updateReviewSections() {
-        const serviceType = document.getElementById('serviceType').value;
-        
-        // Update Service Review
-        let serviceDetails = `
-            <div class="review-item">
-                <div class="review-label">Service Type:</div>
-                <div class="review-value">${serviceType === 'transportation' ? 'Transportation Services' : 'Lawn Care Services'}</div>
-            </div>
-        `;
-
-        if (serviceType === 'transportation') {
-            const type = document.getElementById('transportationType').value;
-            const distance = document.getElementById('distance').value;
-            const size = document.getElementById('itemSize').value;
-
-            serviceDetails += `
-                <div class="review-item">
-                    <div class="review-label">Transportation Type:</div>
-                    <div class="review-value">${type ? type.replace('-', ' ').toUpperCase() : ''}</div>
-                </div>
-                <div class="review-item">
-                    <div class="review-label">Distance:</div>
-                    <div class="review-value">${distance} miles</div>
-                </div>
-                <div class="review-item">
-                    <div class="review-label">Load Size:</div>
-                    <div class="review-value">${size ? size.charAt(0).toUpperCase() + size.slice(1) : ''}</div>
-                </div>
-            `;
-        } else if (serviceType === 'lawncare') {
-            const type = document.getElementById('lawncareType').value;
-            const size = document.getElementById('lawnSize').value;
-            const condition = document.getElementById('lawnCondition').value;
-
-            serviceDetails += `
-                <div class="review-item">
-                    <div class="review-label">Lawn Care Type:</div>
-                    <div class="review-value">${type ? type.charAt(0).toUpperCase() + type.slice(1) : ''}</div>
-                </div>
-                <div class="review-item">
-                    <div class="review-label">Lawn Size:</div>
-                    <div class="review-value">${size} sq ft</div>
-                </div>
-                <div class="review-item">
-                    <div class="review-label">Lawn Condition:</div>
-                    <div class="review-value">${condition ? condition.charAt(0).toUpperCase() + condition.slice(1) : ''}</div>
-                </div>
-            `;
-        }
-
-        // Update Contact Review
-        const contactDetails = `
-            <div class="review-item">
-                <div class="review-label">Name:</div>
-                <div class="review-value">${document.getElementById('name').value}</div>
-            </div>
-            <div class="review-item">
-                <div class="review-label">Email:</div>
-                <div class="review-value">${document.getElementById('email').value}</div>
-            </div>
-            <div class="review-item">
-                <div class="review-label">Phone:</div>
-                <div class="review-value">${document.getElementById('phone').value || 'Not provided'}</div>
-            </div>
-        `;
-
-        // Update Schedule Review
-        const scheduleDetails = `
-            <div class="review-item">
-                <div class="review-label">Service Address:</div>
-                <div class="review-value">${document.getElementById('address').value}</div>
-            </div>
-            <div class="review-item">
-                <div class="review-label">Preferred Date:</div>
-                <div class="review-value">${document.getElementById('preferredDate').value}</div>
-            </div>
-            <div class="review-item">
-                <div class="review-label">Additional Details:</div>
-                <div class="review-value">${document.getElementById('additionalDetails').value || 'None provided'}</div>
-            </div>
-            <div class="review-item">
-                <div class="review-label">Uploaded Images:</div>
-                <div class="review-value">${uploadedImages.length > 0 ? uploadedImages.length + ' image(s) uploaded' : 'No images uploaded'}</div>
-            </div>
-        `;
-
-        document.getElementById('serviceReview').innerHTML = serviceDetails;
-        document.getElementById('contactReview').innerHTML = contactDetails;
-        document.getElementById('scheduleReview').innerHTML = scheduleDetails;
-    }
-
-    // Update price display
-    function updatePriceDisplay() {
-        const priceDetails = calculatePriceDetails();
-        const finalPriceBreakdown = document.getElementById('finalPriceBreakdown');
-        const finalTotalPrice = document.getElementById('finalTotalPrice');
-
-        finalPriceBreakdown.innerHTML = priceDetails.breakdown
-            .map(item => `
-                <div class="price-item">
-                    <span>${item.label}:</span>
-                    <span>$${item.amount.toFixed(2)}</span>
-                </div>
-            `).join('');
-
-        finalTotalPrice.textContent = `$${priceDetails.total.toFixed(2)}`;
-    }
-
-    // Service type change handler
-    document.getElementById('serviceType').addEventListener('change', function(e) {
-        const transportationOptions = document.querySelector('.transportation-options');
-        const lawncareOptions = document.querySelector('.lawncare-options');
-        
-        transportationOptions.classList.add('d-none');
-        lawncareOptions.classList.add('d-none');
-        
-        if (e.target.value === 'transportation') {
-            transportationOptions.classList.remove('d-none');
-        } else if (e.target.value === 'lawncare') {
-            lawncareOptions.classList.remove('d-none');
-        }
-
-        if (currentStep === steps.length - 1) {
-            updatePriceDisplay();
-            updateReviewSections();
-        }
-    });
-
-    // Add price update listeners
-    ['transportationType', 'distance', 'itemSize', 'lawncareType', 'lawnSize', 'lawnCondition'].forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.addEventListener('change', () => {
-                if (currentStep === steps.length - 1) {
-                    updatePriceDisplay();
-                    updateReviewSections();
-                }
-            });
-            element.addEventListener('input', () => {
-                if (currentStep === steps.length - 1) {
-                    updatePriceDisplay();
-                    updateReviewSections();
-                }
-            });
-        }
-    });
-
-    // Phone number formatting
-    const phoneInput = document.getElementById('phone');
-    phoneInput.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length > 0) {
-            if (value.length <= 3) {
-                value = `(${value}`;
-            } else if (value.length <= 6) {
-                value = `(${value.slice(0,3)}) ${value.slice(3)}`;
-            } else {
-                value = `(${value.slice(0,3)}) ${value.slice(3,6)}-${value.slice(6,10)}`;
-            }
-        }
-        e.target.value = value;
-    });
-
-    // Navigation functions
-    function showStep(step) {
-        steps.forEach((s, index) => {
-            s.classList.toggle('d-none', index !== step);
-        });
-
-        const progress = ((step + 1) / steps.length) * 100;
-        progressBar.style.width = progress + '%';
-        progressBar.setAttribute('aria-valuenow', progress);
-
-        prevButton.style.display = step === 0 ? 'none' : 'block';
-        nextButton.style.display = step === steps.length - 1 ? 'none' : 'block';
-        submitButton.style.display = step === steps.length - 1 ? 'block' : 'none';
-
-        if (step === steps.length - 1) {
-            updatePriceDisplay();
-            updateReviewSections();
-        }
-    }
-
-    // Validation functions
-    function validateStep(step) {
-        const currentStepElement = steps[step];
-        const requiredFields = currentStepElement.querySelectorAll('[required]');
-        let isValid = true;
-
-        requiredFields.forEach(field => {
-            if (!field.value) {
-                isValid = false;
-                field.classList.add('is-invalid');
-            } else {
-                field.classList.remove('is-invalid');
-            }
-        });
-
-        if (step === 0) {
-            const serviceType = document.getElementById('serviceType').value;
-            if (serviceType === 'transportation') {
-                const transportationType = document.getElementById('transportationType');
-                const distance = document.getElementById('distance');
-                const itemSize = document.getElementById('itemSize');
-
-                if (!transportationType.value || !distance.value || !itemSize.value) {
-                    isValid = false;
-                    if (!transportationType.value) transportationType.classList.add('is-invalid');
-                    if (!distance.value) distance.classList.add('is-invalid');
-                    if (!itemSize.value) itemSize.classList.add('is-invalid');
-                }
-            } else if (serviceType === 'lawncare') {
-                const lawncareType = document.getElementById('lawncareType');
-                const lawnSize = document.getElementById('lawnSize');
-                const lawnCondition = document.getElementById('lawnCondition');
-
-                if (!lawncareType.value || !lawnSize.value || !lawnCondition.value) {
-                    isValid = false;
-                    if (!lawncareType.value) lawncareType.classList.add('is-invalid');
-                    if (!lawnSize.value) lawnSize.classList.add('is-invalid');
-                    if (!lawnCondition.value) lawnCondition.classList.add('is-invalid');
-                }
-            }
-        }
-
-        return isValid;
-    }
-
-    // Navigation event listeners
-    prevButton.addEventListener('click', () => {
-        if (currentStep > 0) {
-            currentStep--;
-            showStep(currentStep);
-        }
-    });
-
-    nextButton.addEventListener('click', () => {
-        if (validateStep(currentStep)) {
-            currentStep++;
-            showStep(currentStep);
-        }
-    });
-
-    // Form submission
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        if (validateStep(currentStep)) {
-            const priceDetails = calculatePriceDetails();
-            const formData = {
-                serviceType: document.getElementById('serviceType').value,
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value || 'Not provided',
-                address: document.getElementById('address').value,
-                preferredDate: document.getElementById('preferredDate').value,
-                additionalDetails: document.getElementById('additionalDetails').value || 'None provided',
-                paymentMethod: document.getElementById('paymentMethod').value,
-                totalPrice: priceDetails.total,
-                uploadedImages: uploadedImages
-            };
-
-            if (formData.serviceType === 'transportation') {
-                formData.transportationType = document.getElementById('transportationType').value;
-                formData.distance = document.getElementById('distance').value;
-                formData.itemSize = document.getElementById('itemSize').value;
-            } else if (formData.serviceType === 'lawncare') {
-                formData.lawncareType = document.getElementById('lawncareType').value;
-                formData.lawnSize = document.getElementById('lawnSize').value;
-                formData.lawnCondition = document.getElementById('lawnCondition').value;
-            }
-
-            console.log('Form submitted:', formData);
-            
-            // Create a detailed confirmation message
-            let confirmationMessage = 'Service request submitted successfully!\n\n';
-            confirmationMessage += `Service Type: ${formData.serviceType === 'transportation' ? 'Transportation' : 'Lawn Care'}\n`;
-            
-            if (formData.serviceType === 'transportation') {
-                confirmationMessage += `Transportation Type: ${formData.transportationType}\n`;
-                confirmationMessage += `Distance: ${formData.distance} miles\n`;
-                confirmationMessage += `Load Size: ${formData.itemSize}\n`;
-            } else {
-                confirmationMessage += `Lawn Care Type: ${formData.lawncareType}\n`;
-                confirmationMessage += `Lawn Size: ${formData.lawnSize} sq ft\n`;
-                confirmationMessage += `Lawn Condition: ${formData.lawnCondition}\n`;
-            }
-            
-            confirmationMessage += `\nContact Information:\n`;
-            confirmationMessage += `Name: ${formData.name}\n`;
-            confirmationMessage += `Email: ${formData.email}\n`;
-            confirmationMessage += `Phone: ${formData.phone}\n`;
-            confirmationMessage += `Address: ${formData.address}\n`;
-            confirmationMessage += `Preferred Date: ${formData.preferredDate}\n`;
-            confirmationMessage += `\nTotal Price: $${priceDetails.total.toFixed(2)}\n`;
-            confirmationMessage += `Payment Method: ${formData.paymentMethod}\n`;
-            confirmationMessage += `Images Uploaded: ${uploadedImages.length}\n\n`;
-            confirmationMessage += `We will contact you soon to confirm your appointment.`;
-            
-            alert(confirmationMessage);
-            
-            // Reset form
-            form.reset();
-            currentStep = 0;
-            showStep(currentStep);
-            
-            // Reset UI elements
-            document.querySelector('.transportation-options').classList.add('d-none');
-            document.querySelector('.lawncare-options').classList.add('d-none');
-            document.getElementById('finalPriceBreakdown').innerHTML = '';
-            document.getElementById('finalTotalPrice').textContent = '$0.00';
-            document.getElementById('imagePreviewContainer').innerHTML = '';
-            uploadedImages = [];
-        }
-    });
-
-    // Initialize form
-    showStep(currentStep);
+    initializeForm();
+    setupEventListeners();
 });
+
+function initializeForm() {
+    // Set minimum date for preferred date input
+    const preferredDateInput = document.getElementById('preferredDate');
+    if (preferredDateInput) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        preferredDateInput.min = tomorrow.toISOString().split('T')[0];
+    }
+
+    // Initialize service type change handler
+    const serviceTypeSelect = document.getElementById('serviceType');
+    if (serviceTypeSelect) {
+        serviceTypeSelect.addEventListener('change', handleServiceTypeChange);
+    }
+}
+
+function setupEventListeners() {
+    // Add form submission listeners for each step
+    const finalForm = document.getElementById('finalForm');
+    if (finalForm) {
+        finalForm.addEventListener('submit', handleFinalSubmit);
+    }
+
+    // Add image upload handler
+    const imageUpload = document.getElementById('imageUpload');
+    if (imageUpload) {
+        imageUpload.addEventListener('change', handleImageUpload);
+    }
+}
+
+function handleServiceTypeChange(event) {
+    const serviceType = event.target.value;
+    const transportationOptions = document.querySelector('.transportation-options');
+    const lawncareOptions = document.querySelector('.lawncare-options');
+
+    // Hide all service-specific options first
+    transportationOptions.classList.add('d-none');
+    lawncareOptions.classList.add('d-none');
+
+    // Show relevant options based on selection
+    if (serviceType === 'transportation') {
+        transportationOptions.classList.remove('d-none');
+    } else if (serviceType === 'lawncare') {
+        lawncareOptions.classList.remove('d-none');
+    }
+
+    // Update required fields
+    updateRequiredFields(serviceType);
+}
+
+function updateRequiredFields(serviceType) {
+    // Transportation fields
+    const transportationFields = ['transportationType', 'distance', 'itemSize'];
+    // Lawn care fields
+    const lawncareFields = ['lawncareType', 'lawnSize', 'lawnCondition'];
+
+    // Reset all fields
+    [...transportationFields, ...lawncareFields].forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.required = false;
+        }
+    });
+
+    // Set required fields based on service type
+    if (serviceType === 'transportation') {
+        transportationFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.required = true;
+            }
+        });
+    } else if (serviceType === 'lawncare') {
+        lawncareFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.required = true;
+            }
+        });
+    }
+}
+
+function nextStep(currentStep) {
+    const currentForm = document.querySelector(`#step${currentStep} form`);
+    
+    // Validate current form
+    if (!validateForm(currentForm)) {
+        return;
+    }
+
+    // Store form data
+    const formFields = new FormData(currentForm);
+    for (let [key, value] of formFields.entries()) {
+        formData[key] = value;
+    }
+
+    // Update progress bar
+    updateProgressBar(currentStep + 1);
+
+    // Hide current step and show next step
+    document.getElementById(`step${currentStep}`).classList.add('d-none');
+    document.getElementById(`step${currentStep + 1}`).classList.remove('d-none');
+
+    // If moving to review step, populate review sections
+    if (currentStep === 3) {
+        populateReviewSection();
+    }
+}
+
+function prevStep(currentStep) {
+    // Update progress bar
+    updateProgressBar(currentStep - 1);
+
+    // Hide current step and show previous step
+    document.getElementById(`step${currentStep}`).classList.add('d-none');
+    document.getElementById(`step${currentStep - 1}`).classList.remove('d-none');
+}
+
+function validateForm(form) {
+    if (!form.checkValidity()) {
+        // Add was-validated class to show validation feedback
+        form.classList.add('was-validated');
+        return false;
+    }
+    return true;
+}
+
+function updateProgressBar(step) {
+    const progressBar = document.querySelector('.progress-bar');
+    const percentage = (step / 4) * 100;
+    progressBar.style.width = `${percentage}%`;
+    progressBar.setAttribute('aria-valuenow', percentage);
+}
+
+function handleImageUpload(input) {
+    const maxFiles = 5;
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    const previewContainer = document.getElementById('imagePreviewContainer');
+    const errorDiv = document.getElementById('uploadError');
+
+    // Clear previous error messages
+    errorDiv.textContent = '';
+    
+    // Validate number of files
+    if (input.files.length > maxFiles) {
+        errorDiv.textContent = `Maximum ${maxFiles} files allowed`;
+        input.value = '';
+        return;
+    }
+
+    // Clear previous previews
+    previewContainer.innerHTML = '';
+
+    // Process each file
+    Array.from(input.files).forEach(file => {
+        if (file.size > maxSize) {
+            errorDiv.textContent = `File ${file.name} exceeds 5MB limit`;
+            input.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.createElement('div');
+            preview.className = 'image-preview';
+            preview.innerHTML = `
+                <img src="${e.target.result}" alt="Preview">
+                <span class="filename">${file.name}</span>
+            `;
+            previewContainer.appendChild(preview);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function populateReviewSection() {
+    const reviewSection = document.getElementById('reviewSections');
+    if (!reviewSection) return;
+
+    reviewSection.innerHTML = '';
+
+    // Service Details Review
+    const serviceDetails = document.createElement('div');
+    serviceDetails.className = 'review-section';
+    serviceDetails.innerHTML = `
+        <h5>Service Details</h5>
+        <p><strong>Service Type:</strong> ${formData.serviceType ? formData.serviceType.charAt(0).toUpperCase() + formData.serviceType.slice(1) : ''}</p>
+        ${getServiceSpecificReview()}
+    `;
+    reviewSection.appendChild(serviceDetails);
+
+    // Contact Information Review
+    const contactInfo = document.createElement('div');
+    contactInfo.className = 'review-section';
+    contactInfo.innerHTML = `
+        <h5>Contact Information</h5>
+        <p><strong>Name:</strong> ${formData.name || ''}</p>
+        <p><strong>Email:</strong> ${formData.email || ''}</p>
+        ${formData.phone ? `<p><strong>Phone:</strong> ${formData.phone}</p>` : ''}
+    `;
+    reviewSection.appendChild(contactInfo);
+
+    // Location & Schedule Review
+    const locationSchedule = document.createElement('div');
+    locationSchedule.className = 'review-section';
+    locationSchedule.innerHTML = `
+        <h5>Location & Schedule</h5>
+        <p><strong>Address:</strong> ${formData.address || ''}</p>
+        <p><strong>State:</strong> ${formData.state || ''}</p>
+        <p><strong>Preferred Date:</strong> ${formData.preferredDate ? new Date(formData.preferredDate).toLocaleDateString() : ''}</p>
+        ${formData.additionalDetails ? `<p><strong>Additional Details:</strong> ${formData.additionalDetails}</p>` : ''}
+    `;
+    reviewSection.appendChild(locationSchedule);
+
+    // Calculate and display price
+    calculateFinalPrice();
+}
+
+function getServiceSpecificReview() {
+    if (formData.serviceType === 'transportation') {
+        return `
+            <p><strong>Transportation Type:</strong> ${formData.transportationType || ''}</p>
+            <p><strong>Distance:</strong> ${formData.distance ? `${formData.distance} miles` : ''}</p>
+            <p><strong>Load Size:</strong> ${formData.itemSize || ''}</p>
+        `;
+    } else if (formData.serviceType === 'lawncare') {
+        return `
+            <p><strong>Lawn Care Type:</strong> ${formData.lawncareType || ''}</p>
+            <p><strong>Lawn Size:</strong> ${formData.lawnSize ? `${formData.lawnSize} sq ft` : ''}</p>
+            <p><strong>Lawn Condition:</strong> ${formData.lawnCondition || ''}</p>
+        `;
+    }
+    return '';
+}
+
+function calculateFinalPrice() {
+    let basePrice = 0;
+    let additionalCosts = [];
+
+    if (formData.serviceType === 'transportation') {
+        // Calculate transportation service price
+        basePrice = 50; // Base price for transportation
+        const distancePrice = parseFloat(formData.distance) * 2; // $2 per mile
+        additionalCosts.push({
+            description: 'Distance Cost',
+            amount: distancePrice
+        });
+
+        // Add load size cost
+        let loadSizeCost = 0;
+        switch (formData.itemSize) {
+            case 'small':
+                loadSizeCost = 25;
+                break;
+            case 'medium':
+                loadSizeCost = 50;
+                break;
+            case 'large':
+                loadSizeCost = 100;
+                break;
+        }
+        additionalCosts.push({
+            description: 'Load Size Cost',
+            amount: loadSizeCost
+        });
+
+    } else if (formData.serviceType === 'lawncare') {
+        // Calculate lawn care service price
+        basePrice = 30; // Base price for lawn care
+        const areaCost = (parseFloat(formData.lawnSize) / 1000) * 20; // $20 per 1000 sq ft
+        additionalCosts.push({
+            description: 'Area Cost',
+            amount: areaCost
+        });
+
+        // Add condition cost
+        let conditionCost = 0;
+        switch (formData.lawnCondition) {
+            case 'good':
+                conditionCost = 0;
+                break;
+            case 'fair':
+                conditionCost = 20;
+                break;
+            case 'poor':
+                conditionCost = 40;
+                break;
+        }
+        additionalCosts.push({
+            description: 'Condition Cost',
+            amount: conditionCost
+        });
+    }
+
+    // Display price breakdown
+    const breakdownDiv = document.getElementById('finalPriceBreakdown');
+    breakdownDiv.innerHTML = `
+        <div class="price-item">
+            <span>Base Price:</span>
+            <span>$${basePrice.toFixed(2)}</span>
+        </div>
+        ${additionalCosts.map(cost => `
+            <div class="price-item">
+                <span>${cost.description}:</span>
+                <span>$${cost.amount.toFixed(2)}</span>
+            </div>
+        `).join('')}
+    `;
+
+    // Calculate and display total
+    const total = basePrice + additionalCosts.reduce((sum, cost) => sum + cost.amount, 0);
+    document.getElementById('finalTotalPrice').textContent = `$${total.toFixed(2)}`;
+}
+
+async function handleFinalSubmit(event) {
+    event.preventDefault();
+    console.log('Form submitted'); // Debug log
+
+    const form = event.target;
+    if (!validateForm(form)) {
+        return;
+    }
+
+    try {
+        // Show loading state
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
+
+        // Add payment method to form data
+        formData.paymentMethod = document.getElementById('paymentMethod').value;
+
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate network delay
+
+        console.log('Showing success message'); // Debug log
+
+        // Get the form wrapper
+        const formWrapper = document.getElementById('serviceRequestFormWrapper');
+        
+        // Create success message
+        const successMessage = document.createElement('div');
+        successMessage.className = 'success-message';
+        successMessage.innerHTML = `
+            <div class="success-icon">
+                <i class="fas fa-check-circle fa-4x"></i>
+            </div>
+            <h4 class="mt-4">Thank You for Choosing Our Services!</h4>
+            <p class="lead">Your request has been successfully submitted.</p>
+            
+            <div class="order-details mt-4">
+                <h5>Order Details</h5>
+                <div class="detail-item">
+                    <span>Reference Number:</span>
+                    <span>SR-${Date.now()}</span>
+                </div>
+                <div class="detail-item">
+                    <span>Service Type:</span>
+                    <span>${formData.serviceType ? formData.serviceType.charAt(0).toUpperCase() + formData.serviceType.slice(1) : ''}</span>
+                </div>
+                <div class="detail-item">
+                    <span>Total Amount:</span>
+                    <span>${document.getElementById('finalTotalPrice').textContent}</span>
+                </div>
+            </div>
+
+            <div class="next-steps mt-4">
+                <h5>What Happens Next?</h5>
+                <ul>
+                    <li>You'll receive a confirmation email shortly</li>
+                    <li>Our team will review your request within 24 hours</li>
+                    <li>We'll contact you to confirm the details</li>
+                </ul>
+            </div>
+
+            <div class="action-buttons mt-4">
+                <button onclick="window.location.reload()" class="btn btn-primary me-3">
+                    Submit Another Request
+                </button>
+                <a href="index.html" class="btn btn-outline-primary">
+                    Return Home
+                </a>
+            </div>
+        `;
+
+        // Clear the form wrapper and add success message
+        formWrapper.innerHTML = '';
+        formWrapper.appendChild(successMessage);
+
+        // Scroll to success message
+        successMessage.scrollIntoView({ behavior: 'smooth' });
+
+    } catch (error) {
+        console.error('Submission error:', error); // Debug log
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'alert alert-danger mt-3';
+        errorDiv.textContent = 'There was an error submitting your request. Please try again.';
+        form.insertBefore(errorDiv, form.firstChild);
+        
+        // Re-enable submit button
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.disabled = false;
+        submitButton.textContent = 'Submit Request';
+    }
+}
+
+// Function to handle submitting another request
+function submitAnotherRequest() {
+    // Reset all forms
+    document.getElementById('serviceDetailsForm').reset();
+    document.getElementById('contactForm').reset();
+    document.getElementById('locationForm').reset();
+    document.getElementById('finalForm').reset();
+    
+    // Clear form data
+    formData = {};
+    
+    // Reset validation classes
+    document.querySelectorAll('form').forEach(form => {
+        form.classList.remove('was-validated');
+    });
+    
+    // Show first step and hide others
+    document.querySelectorAll('.form-step').forEach((step, index) => {
+        if (index === 0) {
+            step.classList.remove('d-none');
+        } else {
+            step.classList.add('d-none');
+        }
+    });
+    
+    // Reset progress bar
+    updateProgressBar(1);
+    
+    // Clear image previews
+    const previewContainer = document.getElementById('imagePreviewContainer');
+    if (previewContainer) {
+        previewContainer.innerHTML = '';
+    }
+
+    // Scroll to top of form
+    document.querySelector('.service-request-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+function showMessage(type, message) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    `;
+    
+    const formWrapper = document.getElementById('serviceRequestFormWrapper');
+    formWrapper.insertBefore(alertDiv, formWrapper.firstChild);
+}
+
+function resetForm() {
+    // Reset form data
+    formData = {};
+    
+    // Reset all forms
+    document.getElementById('serviceDetailsForm').reset();
+    document.getElementById('contactForm').reset();
+    document.getElementById('locationForm').reset();
+    document.getElementById('finalForm').reset();
+    
+    // Remove validation classes
+    document.querySelectorAll('form').forEach(form => {
+        form.classList.remove('was-validated');
+    });
+    
+    // Hide all steps except first
+    document.querySelectorAll('.form-step').forEach((step, index) => {
+        if (index === 0) {
+            step.classList.remove('d-none');
+        } else {
+            step.classList.add('d-none');
+        }
+    });
+    
+    // Reset progress bar
+    updateProgressBar(1);
+    
+    // Clear image previews
+    const previewContainer = document.getElementById('imagePreviewContainer');
+    if (previewContainer) {
+        previewContainer.innerHTML = '';
+    }
+}

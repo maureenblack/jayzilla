@@ -1109,6 +1109,179 @@ footer {
     }
 }
 
+/* Review Section Styles */
+.review-section {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.review-section h5 {
+    color: #0d6efd;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.review-section p {
+    margin-bottom: 0.5rem;
+}
+
+.review-section strong {
+    color: #495057;
+}
+
+.price-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.price-item:last-child {
+    border-bottom: none;
+}
+
+.total-price {
+    font-size: 1.2rem;
+    padding-top: 1rem;
+    border-top: 2px solid #dee2e6;
+}
+
+.image-preview {
+    display: inline-block;
+    margin: 0.5rem;
+    text-align: center;
+}
+
+.image-preview img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.image-preview .filename {
+    font-size: 0.8rem;
+    color: #6c757d;
+    display: block;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Success Message Styles */
+.success-message {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 1rem;
+    padding: 2.5rem;
+    text-align: center;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+.success-message .success-icon {
+    color: #28a745;
+    margin-bottom: 1.5rem;
+}
+
+.success-message h4 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.success-message .lead {
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+.success-message .order-details {
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    text-align: left;
+}
+
+.success-message .detail-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.success-message .detail-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.success-message .detail-item .label {
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.success-message .detail-item .value {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.success-message .next-steps {
+    background-color: #e8f4fc;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.success-message .next-steps h5 {
+    color: #0d6efd;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.success-message .next-steps ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.success-message .next-steps ul li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #495057;
+}
+
+.success-message .next-steps ul li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #28a745;
+    font-weight: bold;
+}
+
+.success-message .action-buttons {
+    margin: 2rem 0;
+}
+
+.success-message .contact-info {
+    color: #6c757d;
+    font-size: 0.9rem;
+    border-top: 1px solid #dee2e6;
+    padding-top: 1.5rem;
+}
+
+.success-message .contact-info i {
+    color: #0d6efd;
+}
+
 /* Why Choose Us Section */
 .why-choose-section {
     background-color: var(--dark-color);

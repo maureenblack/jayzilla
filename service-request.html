@@ -261,220 +261,222 @@
     </nav>
 
     <!-- Service Request Form -->
-    <section class="service-request-section mt-5 pt-5">
+    <section class="service-request-section py-5">
         <div class="container">
-            <div class="section-header text-center mb-5">
-                <h1>Request Our Services</h1>
-                <p>Tell us about your project and we'll get back to you within 24 hours.</p>
-            </div>
-
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <!-- Progress Bar -->
-                    <div class="progress mb-4">
-                        <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25"
-                            aria-valuemin="0" aria-valuemax="100"></div>
+            <div id="serviceRequestFormWrapper">
+                <!-- Progress bar -->
+                <div class="progress-bar-wrapper mb-4">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
+                    <div class="step-indicators">
+                        <span class="step active">1</span>
+                        <span class="step">2</span>
+                        <span class="step">3</span>
+                        <span class="step">4</span>
+                    </div>
+                </div>
 
-                    <!-- Form -->
-                    <form id="serviceRequestForm">
-                        <!-- Step 1: Service Details -->
-                        <div class="form-step">
-                            <h4 class="mb-4">Service Details</h4>
+                <!-- Step 1: Service Details -->
+                <div class="form-step" id="step1">
+                    <form id="serviceDetailsForm" novalidate>
+                        <h4 class="mb-4">Service Details</h4>
+                        <div class="mb-3">
+                            <label for="serviceType" class="form-label">Service Type <span class="text-danger">*</span></label>
+                            <select class="form-control" id="serviceType" name="serviceType" required>
+                                <option value="">Select a service</option>
+                                <option value="transportation">Transportation Services</option>
+                                <option value="lawncare">Lawn Care Services</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a service type</div>
+                        </div>
+
+                        <!-- Transportation Options -->
+                        <div class="transportation-options d-none">
                             <div class="mb-3">
-                                <label for="serviceType" class="form-label">Service Type <span class="text-danger">*</span></label>
-                                <select class="form-control" id="serviceType" required>
-                                    <option value="">Select a service</option>
-                                    <option value="transportation">Transportation Services</option>
-                                    <option value="lawncare">Lawn Care Services</option>
+                                <label for="transportationType" class="form-label">Transportation Type <span class="text-danger">*</span></label>
+                                <select class="form-control" id="transportationType" name="transportationType">
+                                    <option value="">Select transportation type</option>
+                                    <option value="local-moving">Local Moving</option>
+                                    <option value="furniture">Furniture Transportation</option>
+                                    <option value="delivery">Delivery Services</option>
                                 </select>
-                                <div class="invalid-feedback">Please select a service type</div>
-                            </div>
-
-                            <!-- Transportation Options -->
-                            <div class="transportation-options d-none">
-                                <div class="mb-3">
-                                    <label for="transportationType" class="form-label">Transportation Type <span class="text-danger">*</span></label>
-                                    <select class="form-control" id="transportationType">
-                                        <option value="">Select transportation type</option>
-                                        <option value="local-moving">Local Moving</option>
-                                        <option value="furniture">Furniture Transportation</option>
-                                        <option value="delivery">Delivery Services</option>
-                                    </select>
-                                    <div class="invalid-feedback">Please select a transportation type</div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="distance" class="form-label">Estimated Distance (miles) <span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" id="distance" min="1" placeholder="Enter estimated distance">
-                                    <div class="invalid-feedback">Please enter the estimated distance</div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="itemSize" class="form-label">Load Size <span class="text-danger">*</span></label>
-                                    <select class="form-control" id="itemSize">
-                                        <option value="">Select load size</option>
-                                        <option value="small">Small (Few Items)</option>
-                                        <option value="medium">Medium (Room/Apartment)</option>
-                                        <option value="large">Large (House)</option>
-                                    </select>
-                                    <div class="invalid-feedback">Please select the load size</div>
-                                </div>
-                            </div>
-
-                            <!-- Lawn Care Options -->
-                            <div class="lawncare-options d-none">
-                                <div class="mb-3">
-                                    <label for="lawncareType" class="form-label">Lawn Care Type <span class="text-danger">*</span></label>
-                                    <select class="form-control" id="lawncareType">
-                                        <option value="">Select lawn care type</option>
-                                        <option value="mowing">Regular Lawn Mowing</option>
-                                        <option value="trimming">Edge Trimming</option>
-                                        <option value="cleanup">Yard Cleanup</option>
-                                        <option value="treatment">Grass Treatment</option>
-                                    </select>
-                                    <div class="invalid-feedback">Please select a lawn care type</div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="lawnSize" class="form-label">Lawn Size (sq ft) <span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" id="lawnSize" min="100" placeholder="Enter lawn size">
-                                    <div class="invalid-feedback">Please enter the lawn size</div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="lawnCondition" class="form-label">Current Lawn Condition <span class="text-danger">*</span></label>
-                                    <select class="form-control" id="lawnCondition">
-                                        <option value="">Select condition</option>
-                                        <option value="good">Good - Regular maintenance needed</option>
-                                        <option value="fair">Fair - Some attention required</option>
-                                        <option value="poor">Poor - Significant work needed</option>
-                                    </select>
-                                    <div class="invalid-feedback">Please select the lawn condition</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Step 2: Contact Information -->
-                        <div class="form-step d-none">
-                            <h4 class="mb-4">Contact Information</h4>
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="name" required>
-                                <div class="invalid-feedback">Please enter your name</div>
+                                <div class="invalid-feedback">Please select a transportation type</div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control" id="email" required>
-                                <div class="invalid-feedback">Please enter a valid email</div>
+                                <label for="distance" class="form-label">Estimated Distance (miles) <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="distance" name="distance" min="1" placeholder="Enter estimated distance">
+                                <div class="invalid-feedback">Please enter the estimated distance</div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="phone" class="form-label">Phone Number</label>
-                                <input type="tel" class="form-control" id="phone">
-                                <div class="text-muted">Optional - Format: (123) 456-7890</div>
-                            </div>
-                        </div>
-
-                        <!-- Step 3: Location & Schedule -->
-                        <div class="form-step d-none">
-                            <h4 class="mb-4">Location & Schedule</h4>
-                            <div class="mb-3">
-                                <label for="address" class="form-label">Service Address <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="address" required>
-                                <div class="invalid-feedback">Please enter the service address</div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="preferredDate" class="form-label">Preferred Date <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="preferredDate" required>
-                                <div class="invalid-feedback">Please select a preferred date</div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="additionalDetails" class="form-label">Additional Details</label>
-                                <textarea class="form-control" id="additionalDetails" rows="3" 
-                                    placeholder="Any specific requirements or special instructions (optional)"></textarea>
-                            </div>
-
-                            <!-- Image Upload Section -->
-                            <div class="mb-4">
-                                <label class="form-label">Upload Images <small class="text-muted">(Max 5 files, 5MB each)</small></label>
-                                <div class="image-upload-container">
-                                    <div class="custom-file-upload">
-                                        <input type="file" class="form-control" id="imageUpload" accept="image/*" multiple
-                                            onchange="handleImageUpload(this)">
-                                    </div>
-                                    <div id="imagePreviewContainer" class="mt-3">
-                                        <!-- Image previews will be added here -->
-                                    </div>
-                                    <div id="uploadError" class="text-danger mt-2"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Step 4: Review & Payment -->
-                        <div class="form-step d-none">
-                            <h4 class="mb-4">Review & Payment</h4>
-
-                            <!-- Service Review -->
-                            <div class="review-section mb-4">
-                                <h5>Service Details</h5>
-                                <div id="serviceReview">
-                                    <!-- Will be populated by JavaScript -->
-                                </div>
-                            </div>
-
-                            <!-- Contact Review -->
-                            <div class="review-section mb-4">
-                                <h5>Contact Information</h5>
-                                <div id="contactReview">
-                                    <!-- Will be populated by JavaScript -->
-                                </div>
-                            </div>
-
-                            <!-- Schedule Review -->
-                            <div class="review-section mb-4">
-                                <h5>Schedule & Location</h5>
-                                <div id="scheduleReview">
-                                    <!-- Will be populated by JavaScript -->
-                                </div>
-                            </div>
-                            
-                            <!-- Price Summary -->
-                            <div class="price-summary mb-4">
-                                <h5 class="mb-3">Price Breakdown</h5>
-                                <div id="finalPriceBreakdown">
-                                    <!-- Will be populated by JavaScript -->
-                                </div>
-                                <div class="total-price">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span>Total Amount:</span>
-                                        <span id="finalTotalPrice">$0.00</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Payment Method Selection -->
-                            <div class="mb-3">
-                                <label for="paymentMethod" class="form-label">Payment Method <span class="text-danger">*</span></label>
-                                <select class="form-control" id="paymentMethod" required>
-                                    <option value="">Select payment method</option>
-                                    <option value="cash">Cash on Service</option>
-                                    <option value="card">Credit/Debit Card</option>
-                                    <option value="bank">Bank Transfer</option>
-                                    <option value="mobile">Mobile Money</option>
+                                <label for="itemSize" class="form-label">Load Size <span class="text-danger">*</span></label>
+                                <select class="form-control" id="itemSize" name="itemSize">
+                                    <option value="">Select load size</option>
+                                    <option value="small">Small (Few Items)</option>
+                                    <option value="medium">Medium (Room/Apartment)</option>
+                                    <option value="large">Large (House)</option>
                                 </select>
-                                <div class="invalid-feedback">Please select a payment method</div>
+                                <div class="invalid-feedback">Please select the load size</div>
                             </div>
                         </div>
 
-                        <!-- Navigation Buttons -->
+                        <!-- Lawn Care Options -->
+                        <div class="lawncare-options d-none">
+                            <div class="mb-3">
+                                <label for="lawncareType" class="form-label">Lawn Care Type <span class="text-danger">*</span></label>
+                                <select class="form-control" id="lawncareType" name="lawncareType">
+                                    <option value="">Select lawn care type</option>
+                                    <option value="mowing">Regular Lawn Mowing</option>
+                                    <option value="trimming">Edge Trimming</option>
+                                    <option value="cleanup">Yard Cleanup</option>
+                                    <option value="treatment">Grass Treatment</option>
+                                </select>
+                                <div class="invalid-feedback">Please select a lawn care type</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="lawnSize" class="form-label">Lawn Size (sq ft) <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="lawnSize" name="lawnSize" min="100" placeholder="Enter lawn size">
+                                <div class="invalid-feedback">Please enter the lawn size</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="lawnCondition" class="form-label">Current Lawn Condition <span class="text-danger">*</span></label>
+                                <select class="form-control" id="lawnCondition" name="lawnCondition">
+                                    <option value="">Select condition</option>
+                                    <option value="good">Good - Regular maintenance needed</option>
+                                    <option value="fair">Fair - Some attention required</option>
+                                    <option value="poor">Poor - Significant work needed</option>
+                                </select>
+                                <div class="invalid-feedback">Please select the lawn condition</div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="button" class="btn btn-primary" onclick="nextStep(1)">Next</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Step 2: Contact Information -->
+                <div class="form-step d-none" id="step2">
+                    <form id="contactForm" novalidate>
+                        <h4 class="mb-4">Contact Information</h4>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                            <div class="invalid-feedback">Please enter your name</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            <div class="invalid-feedback">Please enter a valid email</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" name="phone">
+                            <div class="text-muted">Optional - Format: (123) 456-7890</div>
+                        </div>
+
                         <div class="d-flex justify-content-between mt-4">
-                            <button type="button" class="btn btn-secondary" id="prevStep" style="display: none;">Previous</button>
-                            <button type="button" class="btn btn-primary" id="nextStep">Next</button>
-                            <button type="submit" class="btn btn-success" id="submitForm" style="display: none;">Submit Request</button>
+                            <button type="button" class="btn btn-secondary" onclick="prevStep(2)">Previous</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Step 3: Location & Schedule -->
+                <div class="form-step d-none" id="step3">
+                    <form id="locationForm" novalidate>
+                        <h4 class="mb-4">Location & Schedule</h4>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Service Address <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="address" name="address" required>
+                            <div class="invalid-feedback">Please enter the service address</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="state" class="form-label">State <span class="text-danger">*</span></label>
+                            <select class="form-control" id="state" name="state" required>
+                                <option value="">Select state</option>
+                                <option value="OH">Ohio (OH)</option>
+                                <option value="IN">Indiana (IN)</option>
+                                <option value="IL">Illinois (IL)</option>
+                            </select>
+                            <div class="invalid-feedback">Please select your state</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="preferredDate" class="form-label">Preferred Date <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="preferredDate" name="preferredDate" required>
+                            <div class="invalid-feedback">Please select a preferred date</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="additionalDetails" class="form-label">Additional Details</label>
+                            <textarea class="form-control" id="additionalDetails" name="additionalDetails" rows="3" 
+                                placeholder="Any specific requirements or special instructions (optional)"></textarea>
+                        </div>
+
+                        <!-- Image Upload Section -->
+                        <div class="mb-4">
+                            <label class="form-label">Upload Images <small class="text-muted">(Max 5 files, 5MB each)</small></label>
+                            <div class="image-upload-container">
+                                <div class="custom-file-upload">
+                                    <input type="file" class="form-control" id="imageUpload" name="images" accept="image/*" multiple
+                                        onchange="handleImageUpload(this)">
+                                </div>
+                                <div id="imagePreviewContainer" class="mt-3">
+                                    <!-- Image previews will be added here -->
+                                </div>
+                                <div id="uploadError" class="text-danger mt-2"></div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-secondary" onclick="prevStep(3)">Previous</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(3)">Next</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Step 4: Review & Submit -->
+                <div class="form-step d-none" id="step4">
+                    <form id="finalForm" novalidate>
+                        <h4 class="mb-4">Review & Submit</h4>
+                        
+                        <!-- Review sections will be populated by JavaScript -->
+                        <div id="reviewSections"></div>
+
+                        <!-- Price Breakdown -->
+                        <div class="review-section mb-4">
+                            <h5>Price Breakdown</h5>
+                            <div id="finalPriceBreakdown"></div>
+                            <div class="total-price mt-3">
+                                <strong>Total Amount:</strong> <span id="finalTotalPrice">$0.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div class="mb-4">
+                            <label for="paymentMethod" class="form-label">Payment Method <span class="text-danger">*</span></label>
+                            <select class="form-control" id="paymentMethod" name="paymentMethod" required>
+                                <option value="">Select payment method</option>
+                                <option value="card">Credit/Debit Card (Stripe)</option>
+                                <option value="paypal">PayPal</option>
+                                <option value="cashapp">CashApp</option>
+                                <option value="zelle">Zelle</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a payment method</div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-secondary" onclick="prevStep(4)">Previous</button>
+                            <button type="submit" class="btn btn-success">Submit Request</button>
                         </div>
                     </form>
                 </div>
