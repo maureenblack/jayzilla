@@ -47,9 +47,6 @@ document.addEventListener('DOMContentLoaded', function() {
         hideError();
 
         try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1500));
-
             // For demo purposes, check if email contains "admin"
             if (email.includes('admin')) {
                 // Store login state if remember me is checked

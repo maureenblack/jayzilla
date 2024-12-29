@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const phone = document.getElementById('phone').value.trim();
         const password = passwordInput.value;
         const confirmPassword = confirmPasswordInput.value;
-        const terms = document.getElementById('terms').checked;
+        const agreeTerms = document.getElementById('agreeTerms').checked;
 
         // Validation
         if (!fullName || !email || !phone || !password || !confirmPassword) {
@@ -79,9 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Check if terms are agreed to
-        const agreeTerms = document.getElementById('agreeTerms');
-        if (!agreeTerms.checked) {
+        if (!agreeTerms) {
             showError('Please agree to the Terms of Service and Privacy Policy');
             return;
         }
