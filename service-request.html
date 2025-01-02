@@ -297,12 +297,28 @@
                             <label for="serviceType" class="form-label">Service Type <span class="text-danger">*</span></label>
                             <select class="form-control" id="serviceType" name="serviceType" required>
                                 <option value="">Select service type</option>
+                                <option value="transportation">Transportation</option>
                                 <option value="lawncare">Lawn Care</option>
-                                <option value="cleaning">Cleaning</option>
-                                <option value="maintenance">Maintenance</option>
-                                <option value="pest">Pest Control</option>
                             </select>
                             <div class="invalid-feedback">Please select a service type</div>
+                        </div>
+
+                        <div class="transportation-options d-none">
+                            <div class="mb-3">
+                                <label for="distance" class="form-label">Distance (miles) <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="distance" name="distance" min="1" step="0.1">
+                                <div class="invalid-feedback">Please enter the distance</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="itemSize" class="form-label">Load Size <span class="text-danger">*</span></label>
+                                <select class="form-control" id="itemSize" name="itemSize">
+                                    <option value="">Select load size</option>
+                                    <option value="small">Small (fits in car)</option>
+                                    <option value="medium">Medium (fits in van)</option>
+                                    <option value="large">Large (requires truck)</option>
+                                </select>
+                                <div class="invalid-feedback">Please select a load size</div>
+                            </div>
                         </div>
 
                         <div class="mb-3">
@@ -328,7 +344,6 @@
                         </div>
                     </form>
                 </div>
-
                 <!-- Step 2: Contact Information -->
                 <div class="form-step d-none" id="step2">
                     <form id="contactForm" novalidate>

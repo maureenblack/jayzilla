@@ -67,53 +67,22 @@ function setupEventListeners() {
 function handleServiceTypeChange(event) {
     const serviceType = event.target.value;
     const transportationOptions = document.querySelector('.transportation-options');
-    const lawncareOptions = document.querySelector('.lawncare-options');
 
     // Hide all service-specific options first
     transportationOptions.classList.add('d-none');
-    lawncareOptions.classList.add('d-none');
 
     // Show relevant options based on selection
     if (serviceType === 'transportation') {
         transportationOptions.classList.remove('d-none');
-    } else if (serviceType === 'lawncare') {
-        lawncareOptions.classList.remove('d-none');
+        document.getElementById('distance').required = true;
+        document.getElementById('itemSize').required = true;
+    } else {
+        document.getElementById('distance').required = false;
+        document.getElementById('itemSize').required = false;
     }
 
-    // Update required fields
-    updateRequiredFields(serviceType);
-}
-
-function updateRequiredFields(serviceType) {
-    // Transportation fields
-    const transportationFields = ['transportationType', 'distance', 'itemSize'];
-    // Lawn care fields
-    const lawncareFields = ['lawncareType', 'lawnSize', 'lawnCondition'];
-
-    // Reset all fields
-    [...transportationFields, ...lawncareFields].forEach(fieldId => {
-        const field = document.getElementById(fieldId);
-        if (field) {
-            field.required = false;
-        }
-    });
-
-    // Set required fields based on service type
-    if (serviceType === 'transportation') {
-        transportationFields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
-            if (field) {
-                field.required = true;
-            }
-        });
-    } else if (serviceType === 'lawncare') {
-        lawncareFields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
-            if (field) {
-                field.required = true;
-            }
-        });
-    }
+    // Update form data
+    formData.serviceType = serviceType;
 }
 
 function nextStep(currentStep) {
@@ -162,10 +131,14 @@ function validateForm(form) {
 }
 
 function updateProgressBar(step) {
-    const progressBar = document.querySelector('.progress-bar');
-    const percentage = (step / 4) * 100;
-    progressBar.style.width = `${percentage}%`;
-    progressBar.setAttribute('aria-valuenow', percentage);
+    const progressSteps = document.querySelectorAll('.step-item');
+    progressSteps.forEach((stepItem, index) => {
+        if (index < step) {
+            stepItem.classList.add('active');
+        } else {
+            stepItem.classList.remove('active');
+        }
+    });
 }
 
 function handleImageUpload(input) {
@@ -274,59 +247,74 @@ function calculateFinalPrice() {
     let basePrice = 0;
     let additionalCosts = [];
 
-    if (formData.serviceType === 'transportation') {
-        // Calculate transportation service price
-        basePrice = 50; // Base price for transportation
-        const distancePrice = parseFloat(formData.distance) * 2; // $2 per mile
-        additionalCosts.push({
-            description: 'Distance Cost',
-            amount: distancePrice
-        });
+    switch(formData.serviceType) {
+        case 'transportation':
+            basePrice = 75; // Base price for transportation
+            const distance = parseFloat(formData.distance) || 0;
+            const distancePrice = distance * 2.5; // $2.50 per mile
+            if (distance > 0) {
+                additionalCosts.push({
+                    description: 'Distance Cost',
+                    amount: distancePrice
+                });
+            }
 
-        // Add load size cost
-        let loadSizeCost = 0;
-        switch (formData.itemSize) {
-            case 'small':
-                loadSizeCost = 25;
-                break;
-            case 'medium':
-                loadSizeCost = 50;
-                break;
-            case 'large':
-                loadSizeCost = 100;
-                break;
-        }
-        additionalCosts.push({
-            description: 'Load Size Cost',
-            amount: loadSizeCost
-        });
+            // Add load size cost
+            let loadSizeCost = 0;
+            switch (formData.itemSize) {
+                case 'small':
+                    loadSizeCost = 30;
+                    break;
+                case 'medium':
+                    loadSizeCost = 60;
+                    break;
+                case 'large':
+                    loadSizeCost = 120;
+                    break;
+                default:
+                    loadSizeCost = 0;
+            }
+            if (loadSizeCost > 0) {
+                additionalCosts.push({
+                    description: 'Load Size Cost',
+                    amount: loadSizeCost
+                });
+            }
+            break;
 
-    } else if (formData.serviceType === 'lawncare') {
-        // Calculate lawn care service price
-        basePrice = 30; // Base price for lawn care
-        const areaCost = (parseFloat(formData.lawnSize) / 1000) * 20; // $20 per 1000 sq ft
-        additionalCosts.push({
-            description: 'Area Cost',
-            amount: areaCost
-        });
+        case 'lawncare':
+            basePrice = 50; // Base price for lawn care
+            const lawnSize = parseFloat(formData.lawnSize) || 0;
+            const areaCost = (lawnSize / 1000) * 25; // $25 per 1000 sq ft
+            if (lawnSize > 0) {
+                additionalCosts.push({
+                    description: 'Area Cost',
+                    amount: areaCost
+                });
+            }
 
-        // Add condition cost
-        let conditionCost = 0;
-        switch (formData.lawnCondition) {
-            case 'good':
-                conditionCost = 0;
-                break;
-            case 'fair':
-                conditionCost = 20;
-                break;
-            case 'poor':
-                conditionCost = 40;
-                break;
-        }
-        additionalCosts.push({
-            description: 'Condition Cost',
-            amount: conditionCost
-        });
+            // Add condition cost
+            let conditionCost = 0;
+            switch (formData.lawnCondition) {
+                case 'good':
+                    conditionCost = 0;
+                    break;
+                case 'fair':
+                    conditionCost = 25;
+                    break;
+                case 'poor':
+                    conditionCost = 50;
+                    break;
+                default:
+                    conditionCost = 0;
+            }
+            if (conditionCost > 0) {
+                additionalCosts.push({
+                    description: 'Condition Cost',
+                    amount: conditionCost
+                });
+            }
+            break;
     }
 
     // Display price breakdown
@@ -382,31 +370,31 @@ async function handleFinalSubmit(event) {
                 <div style="color: #28a745; font-size: 24px; margin-bottom: 20px;">
                     Request Successfully Submitted!
                 </div>
-                <h4>Thank You for Choosing Jayzilla Services!</h4>
-                <p>Your service request has been successfully submitted.</p>
+                <h4 class="mb-4 text-dark">Thank You for Choosing Jayzilla Services!</h4>
+                <p class="text-dark">Your service request has been successfully submitted.</p>
                 
-                <div class="order-details">
+                <div class="text-dark mb-4 border-details">
                     <div class="detail-item">
-                        <span>Reference Number:</span>
+                        <span class="text-dark">Reference Number:</span>
                         <span>${referenceNumber}</span>
                     </div>
                     <div class="detail-item">
-                        <span>Service Type:</span>
+                        <span class="text-dark">Service Type:</span>
                         <span>${formData.serviceType}</span>
                     </div>
                     <div class="detail-item">
-                        <span>Scheduled Date:</span>
+                        <span class="text-dark">Scheduled Date:</span>
                         <span>${scheduledDate}</span>
                     </div>
                     <div class="detail-item">
-                        <span>Total Amount:</span>
+                        <span class="text-dark">Total Amount:</span>
                         <span>${totalAmount}</span>
                     </div>
                 </div>
 
                 <div class="next-steps">
-                    <h5>What's Next?</h5>
-                    <ul>
+                    <h5 class="text-dark">What's Next?</h5>
+                    <ul class="text-dark">
                         <li>You will receive a confirmation email shortly</li>
                         <li>Our team will review your request within 24 hours</li>
                         <li>We will contact you to confirm the details and schedule</li>

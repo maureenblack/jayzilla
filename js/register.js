@@ -126,8 +126,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="success-icon mb-4">
                         <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
                     </div>
-                    <h3 class="mb-3">Account Created Successfully!</h3>
-                    <p class="lead mb-4">Thank you for registering with Jayzilla!</p>
+                    <h3 class="text-dark mb-3">Account Created Successfully!</h3>
+                    <p class="text-dark lead mb-4">Thank you for registering with Jayzilla!</p>
                     <div class="card mb-4">
                         <div class="card-body text-start">
                             <h5 class="card-title mb-3">Account Information</h5>

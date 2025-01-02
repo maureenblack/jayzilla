@@ -87,8 +87,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="success-icon mb-4">
                             <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
                         </div>
-                        <h3 class="mb-3">Welcome Back, ${firstName}!</h3>
-                        <p class="lead mb-4">Login successful</p>
+                        <h3 class="text-dark mb-3">Welcome Back, ${firstName}!</h3>
+                        <p class="text-dark lead mb-4">Login successful</p>
                         <div class="card mb-4">
                             <div class="card-body">
                                 <h5 class="card-title mb-3">What would you like to do?</h5>
